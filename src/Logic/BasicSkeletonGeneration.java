@@ -14,9 +14,18 @@ public class BasicSkeletonGeneration {
         return MethodSpec.methodBuilder("setStatus").addParameter(TypeVariableName.get("Status"), "aStatus").addCode(setterCode).addModifiers(Modifier.PRIVATE).build();
     }
 
-    public static MethodSpec getConstructor(String className, String initialStateName) {
+    public static MethodSpec getConstructor(String className, String initialStateName, ArrayList<String> parameters) {
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(className);
+
         CodeBlock constructorCode = CodeBlock.builder().addStatement("setStatus(Status." + initialStateName + ")").build();
-        return MethodSpec.methodBuilder(className).addCode(constructorCode).build();
+        builder.addCode(constructorCode);
+
+        for(String parameter : parameters) {
+            builder.addParameter(TypeName.INT, parameter);
+            builder.addStatement("this." + parameter + " = " + parameter);
+        }
+
+        return builder.build();
     }
 
     public static MethodSpec getGetter() {
@@ -41,7 +50,7 @@ public class BasicSkeletonGeneration {
         }
         return Name;
     }
-    public static ArrayList<FieldSpec> getFieldSpec(ArrayList<Transition> transitions) {
+    public static ArrayList<FieldSpec> getFieldSpec(ArrayList<Transition> transitions, ArrayList<String> parameters) {
         ArrayList<FieldSpec> fields = new ArrayList<>();
 
         FieldSpec fieldSpec = FieldSpec.builder(TypeVariableName.get("Status"), "status").addModifiers(Modifier.PRIVATE).build();
@@ -49,10 +58,16 @@ public class BasicSkeletonGeneration {
         fields.add(fieldSpec);
 
         for(Transition t : transitions) {
-            if(!t.getGuard().equals("")) {
+            if(!t.getGuard().equals("")) { // if there is a guard, add guard variables
                 fields.add(getGuardField(t.getGuard()));
             }
         }
+
+        /* add local variable */
+        for(String s : parameters) {
+            fields.add(FieldSpec.builder(TypeName.INT, s).addModifiers(Modifier.PRIVATE).build());
+        }
+
         return fields;
     }
     private static FieldSpec getGuardField(String name) {

@@ -5,7 +5,6 @@ public class Transition {
     private String to;
     private String guard;
     private String probability;
-    private String time;
     private String action;
     private String trigger;
 
@@ -23,10 +22,6 @@ public class Transition {
 
     public String getProbability() {
         return probability;
-    }
-
-    public String getTime() {
-        return time;
     }
 
     public String getAction() {
@@ -47,10 +42,6 @@ public class Transition {
 
     public void setProbability(String probability) {
         this.probability = probability;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public void setAction(String action) {

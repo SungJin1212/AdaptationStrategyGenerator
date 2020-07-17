@@ -2,7 +2,7 @@ package Logic;
 
 import com.squareup.javapoet.CodeBlock;
 
-public class Annotation {
+public class AnnotationGeneration {
     public static CodeBlock getAnnotation() {
         CodeBlock.Builder annotationBuilder = CodeBlock.builder();
 
