@@ -15,7 +15,7 @@ public class BasicSkeletonGeneration {
     }
 
     public static MethodSpec getConstructor(String className, String initialStateName, ArrayList<String> parameters) {
-        MethodSpec.Builder builder = MethodSpec.methodBuilder(className);
+        MethodSpec.Builder builder = MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC);
 
         CodeBlock constructorCode = CodeBlock.builder().addStatement("setStatus(Status." + initialStateName + ")").build();
         builder.addCode(constructorCode);

@@ -58,7 +58,7 @@ TABLE
 <INSTANCE id="obj.58600" class="Configuration" name="Configuration-58600">
 <ATTRIBUTE name="Position" type="STRING">NODE x:7cm y:6.5cm index:5</ATTRIBUTE>
 <ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Parameters" type="STRING">x</ATTRIBUTE>
+<ATTRIBUTE name="Parameters" type="STRING">x,y</ATTRIBUTE>
 </INSTANCE>
 <CONNECTOR id="con.53806" class="Transition">
 <FROM instance="Off" class="State"></FROM>
@@ -67,7 +67,7 @@ TABLE
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="DOUBLE">1</ATTRIBUTE>
 <ATTRIBUTE name="Action" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Trigger" type="STRING">PushButton</ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">PushButton[x][y]?</ATTRIBUTE>
 </CONNECTOR>
 <CONNECTOR id="con.55200" class="Transition">
 <FROM instance="On" class="State"></FROM>
@@ -76,7 +76,7 @@ TABLE
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="DOUBLE">1</ATTRIBUTE>
 <ATTRIBUTE name="Action" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Trigger" type="STRING">PushButton</ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">PushButton[x][y]?</ATTRIBUTE>
 </CONNECTOR>
 </MODEL>
 </MODELS>

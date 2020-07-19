@@ -4,12 +4,12 @@ import Data.State;
 import Data.Transition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Parser {
 
@@ -32,7 +32,9 @@ public class Parser {
                 NodeList nList = e.getElementsByTagName("ATTRIBUTE");
 
                 if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("Configuration")) {
-                    parameterList.add(nList.item(2).getTextContent());
+                    String allparameter = nList.item(2).getTextContent();
+                    String[] parameters = allparameter.split(",");
+                    parameterList.addAll(Arrays.asList(parameters));
                 }
             }
         } catch (Exception e) {
@@ -62,7 +64,6 @@ public class Parser {
                 NodeList nList = e.getElementsByTagName("ATTRIBUTE");
 
                 if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("State")) {
-                    System.out.println("aa");
                     s.setInitialState( nList.item(5).getTextContent());
                     s.setStateName(nList.item(6).getTextContent());
                     StateList.add(s);

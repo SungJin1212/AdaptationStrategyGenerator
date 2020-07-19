@@ -13,6 +13,7 @@ import java.util.Set;
 
 import static Logic.AnnotationGeneration.getAnnotation;
 import static Logic.BasicSkeletonGeneration.*;
+import static Logic.TransitionGeneration.getAction;
 import static Logic.TransitionGeneration.getTransition;
 import static Parser.Parser.*;
 
@@ -25,7 +26,7 @@ public class CodeGenerator {
         urlList.add("bulb.xml");
         urlList.add("Human.xml");
 
-        /*
+
         for(String url : urlList) {
             ArrayList<Transition> trans = getTransitionInformation(url);
             for(Transition t : trans) {
@@ -35,13 +36,13 @@ public class CodeGenerator {
                 }
             }
         }
-        */
+
 
         /*print Synchronization classes */
-        /*
+
         for(Synchronization s : AllTransition) {
             System.out.println(String.format("%s %s \n", s.getName(), s.getTrigger() ));
-        } */
+        }
 
 
 
@@ -52,25 +53,27 @@ public class CodeGenerator {
             ArrayList<String> Parameters = getParameterInformation(url);
 
             /* print parsed data */
-
+            System.out.println("State Machine" + url);
             for (State s : States) {
-                System.out.println(String.format("State: %s %s \n", s.getInitialState(), s.getStateName()));
+                System.out.println(String.format("State: %s %s", s.getInitialState(), s.getStateName()));
             }
             for (Transition t : Transitions) {
-                System.out.println(String.format("Transition: %s %s %s %s %s %s \n", t.getFrom(), t.getTo(), t.getGuard(), t.getProbability(), t.getAction(), t.getTrigger()));
+                System.out.println(String.format("Transition: %s %s %s %s %s %s", t.getFrom(), t.getTo(), t.getGuard(), t.getProbability(), t.getAction(), t.getTrigger()));
             }
             for(String i : Parameters) {
+                System.out.print("Parameters: ");
                 System.out.println(i);
             }
+            System.out.println("--------------------");
 
 
 
-            codeGeneration(url, States, Transitions, Parameters);
+            codeGeneration(url, States, Transitions, Parameters,AllTransition);
         }
 
     }
 
-    private static void codeGeneration(String url, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters) {
+    private static void codeGeneration(String url, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
 
 
         String className = url.substring(0,url.lastIndexOf(".")); //get state machine name
@@ -84,8 +87,8 @@ public class CodeGenerator {
         CodeBlock annotations = getAnnotation(); // get annotations
 
         ArrayList<FieldSpec> fields = getFieldSpec(transitions,parameters); //get field variable
-        ArrayList<MethodSpec> trans = getTransition(transitions); // get transition code
-
+        ArrayList<MethodSpec> trans = getTransition(transitions,allTransition); // get transition code
+        ArrayList<MethodSpec> actions = getAction(transitions);
 
         TypeSpec typeSpec = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
@@ -93,6 +96,7 @@ public class CodeGenerator {
                 .addFields(fields)
                 .addMethods(Arrays.asList(constructor,getter,setter))
                 .addMethods(trans)
+                .addMethods(actions)
                 .addJavadoc(annotations)
                 .build();
 

@@ -59,10 +59,10 @@ TABLE
 <FROM instance="Idle" class="State"></FROM>
 <TO instance="Push" class="State"></TO>
 <ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:3</ATTRIBUTE>
-<ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Guard" type="STRING">guard</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="DOUBLE">1</ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Trigger" type="STRING">PushButton</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">action1,action2</ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">PushButton[x][y]!</ATTRIBUTE>
 </CONNECTOR>
 </MODEL>
 </MODELS>
