@@ -64,8 +64,8 @@ public class Parser {
                 NodeList nList = e.getElementsByTagName("ATTRIBUTE");
 
                 if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("State")) {
-                    s.setInitialState( nList.item(5).getTextContent());
-                    s.setStateName(nList.item(6).getTextContent());
+                    s.setStateName(nList.item(5).getTextContent());
+                    s.setInitialState( nList.item(6).getTextContent());
                     StateList.add(s);
                 }
             }
@@ -79,6 +79,8 @@ public class Parser {
 
     public static ArrayList<Transition> getTransitionInformation(String url) {
         ArrayList <Transition> TransitionList = new ArrayList<>();
+        ArrayList <Transition> From = new ArrayList<>();
+        ArrayList <Transition> To = new ArrayList<>();
 
         try {
 
@@ -97,21 +99,48 @@ public class Parser {
 
                 NodeList nList = e.getElementsByTagName("ATTRIBUTE");
 
+                String curFrom = e.getElementsByTagName("FROM").item(0).getAttributes().getNamedItem("instance").getNodeValue();
+                String curTo = e.getElementsByTagName("TO").item(0).getAttributes().getNamedItem("instance").getNodeValue();
+                String curGuard = nList.item(1).getTextContent();
+                String curAction = nList.item(2).getTextContent();
+                String curTrigger = nList.item(3).getTextContent();
+                String curProbability = nList.item(4).getTextContent();
 
-                t.setFrom(e.getElementsByTagName("FROM").item(0).getAttributes().getNamedItem("instance").getNodeValue());
-                t.setTo(e.getElementsByTagName("TO").item(0).getAttributes().getNamedItem("instance").getNodeValue());
-                t.setGuard(nList.item(1).getTextContent());
-                t.setProbability(nList.item(2).getTextContent());
-                t.setAction(nList.item(3).getTextContent());
-                t.setTrigger(nList.item(4).getTextContent());
 
-                if (t.getAction().equals("")) t.setAction("NoAction");
+                if (curAction.equals("")) {
+                    curAction = "NoAction";
+                }
 
-                TransitionList.add(t);
+
+                if (curTo.contains("associationState")) {
+                    To.add(new Transition(curFrom,curTo,curGuard,curProbability,curAction,curTrigger));
+                }
+                else if (curFrom.contains("associationState")) {
+                    From.add(new Transition(curFrom,curTo,curGuard,curProbability,curAction,curTrigger));
+                }
+                else {
+                    t.setFrom(curFrom);
+                    t.setTo(curTo);
+                    t.setGuard(curGuard);
+                    t.setProbability(curProbability);
+                    t.setAction(curAction);
+                    t.setTrigger(curTrigger);
+                    TransitionList.add(t);
+                }
+
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        for(Transition from : From) {
+            for(Transition to : To) {
+                if(from.getTo().equals(to.getFrom())) {
+                    TransitionList.add(new Transition(to.getFrom(),from.getTo(),from.getGuard(),from.getProbability(),from.getAction(),from.getTrigger()));
+                }
+            }
         }
 
         return TransitionList;

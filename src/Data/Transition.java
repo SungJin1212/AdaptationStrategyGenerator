@@ -16,6 +16,18 @@ public class Transition {
         return to;
     }
 
+    public Transition() {
+    }
+
+    public Transition(String from, String to, String guard, String probability, String action, String trigger) {
+        this.from = from;
+        this.to = to;
+        this.guard = guard;
+        this.probability = probability;
+        this.action = action;
+        this.trigger = trigger;
+    }
+
     public String getGuard() {
         return guard;
     }

@@ -40,9 +40,9 @@ public class CodeGenerator {
 
         /*print Synchronization classes */
 
-        for(Synchronization s : AllTransition) {
-            System.out.println(String.format("%s %s \n", s.getName(), s.getTrigger() ));
-        }
+//        for(Synchronization s : AllTransition) {
+//            System.out.println(String.format("%s %s \n", s.getName(), s.getTrigger() ));
+//        }
 
 
 
@@ -53,7 +53,7 @@ public class CodeGenerator {
             ArrayList<String> Parameters = getParameterInformation(url);
 
             /* print parsed data */
-            System.out.println("State Machine" + url);
+            System.out.println("State Machine: " + url);
             for (State s : States) {
                 System.out.println(String.format("State: %s %s", s.getInitialState(), s.getStateName()));
             }
