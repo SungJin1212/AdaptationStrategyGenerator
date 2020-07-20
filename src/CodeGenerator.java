@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static Logic.ActionGeneration.getAction;
 import static Logic.AnnotationGeneration.getAnnotation;
 import static Logic.BasicSkeletonGeneration.*;
-import static Logic.TransitionGeneration.getAction;
 import static Logic.TransitionGeneration.getTransition;
 import static Parser.Parser.*;
 
@@ -23,15 +23,19 @@ public class CodeGenerator {
 
         Set<Synchronization> AllTransition = new HashSet<>();
         ArrayList<String> urlList = new ArrayList<>();
-        urlList.add("bulb.xml");
-        urlList.add("Human.xml");
+//        urlList.add("Human.xml");
+//        urlList.add("bulb.xml");
+
+        urlList.add("MoppingRobot.xml");
+        urlList.add("SweepingRobot.xml");
+        urlList.add("Tile.xml");
 
 
         for(String url : urlList) {
             ArrayList<Transition> trans = getTransitionInformation(url);
             for(Transition t : trans) {
                 String curTrigger = t.getTrigger();
-                if(curTrigger.charAt(curTrigger.length()-1) == '?' || curTrigger.charAt(curTrigger.length()-1) == '!'){ // Synchronization check
+                if(curTrigger.charAt(curTrigger.length()-1) == '?'){ // Synchronization check
                     AllTransition.add(new Synchronization(url.substring(0, url.lastIndexOf(".")), t.getTrigger()));
                 }
             }
@@ -84,7 +88,7 @@ public class CodeGenerator {
         MethodSpec getter = getGetter(); // get "getter" code
         MethodSpec setter = getSetter(); // get "setter" code
 
-        CodeBlock annotations = getAnnotation(); // get annotations
+        CodeBlock annotations = getAnnotation(url); // get annotations
 
         ArrayList<FieldSpec> fields = getFieldSpec(transitions,parameters); //get field variable
         ArrayList<MethodSpec> trans = getTransition(transitions,allTransition); // get transition code

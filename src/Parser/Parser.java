@@ -32,9 +32,11 @@ public class Parser {
                 NodeList nList = e.getElementsByTagName("ATTRIBUTE");
 
                 if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("Configuration")) {
-                    String allparameter = nList.item(2).getTextContent();
-                    String[] parameters = allparameter.split(",");
-                    parameterList.addAll(Arrays.asList(parameters));
+                    if(!nList.item(2).getTextContent().equals("")) {
+                        String allparameter = nList.item(2).getTextContent();
+                        String[] parameters = allparameter.split(",");
+                        parameterList.addAll(Arrays.asList(parameters));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -43,6 +45,39 @@ public class Parser {
 
         return parameterList;
     }
+
+    public static String getActionCode(String url) {
+        String actionCode = "";
+
+        try {
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document document = builder.parse(url);
+
+            Element rootElement = document.getDocumentElement();
+            NodeList instanceNodes = rootElement.getElementsByTagName("INSTANCE");
+
+            for (int i=0; i<instanceNodes.getLength(); i++) {
+                Element e = (Element) instanceNodes.item(i);
+
+                NodeList nList = e.getElementsByTagName("ATTRIBUTE");
+
+                if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("ActionDescription")) {
+                    if(!nList.item(2).getTextContent().equals("")) {
+                        actionCode = nList.item(2).getTextContent();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return actionCode;
+    }
+
+
 
     public static ArrayList<State> getStateInformation(String url) {
         ArrayList<State> StateList = new ArrayList<>();
@@ -64,7 +99,7 @@ public class Parser {
                 NodeList nList = e.getElementsByTagName("ATTRIBUTE");
 
                 if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("State")) {
-                    s.setStateName(nList.item(5).getTextContent());
+                    s.setStateName(nList.item(0).getParentNode().getAttributes().getNamedItem("name").getNodeValue());
                     s.setInitialState( nList.item(6).getTextContent());
                     StateList.add(s);
                 }

@@ -6,6 +6,8 @@ import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BasicSkeletonGeneration {
 
@@ -52,16 +54,17 @@ public class BasicSkeletonGeneration {
     }
     public static ArrayList<FieldSpec> getFieldSpec(ArrayList<Transition> transitions, ArrayList<String> parameters) {
         ArrayList<FieldSpec> fields = new ArrayList<>();
-
+        Set <String> guardNames = new HashSet<>(); // to remove duplicate guards ex) guard1 == true, guard1 == false, our goal is to extract the "guard1"
         FieldSpec fieldSpec = FieldSpec.builder(TypeVariableName.get("Status"), "status").addModifiers(Modifier.PRIVATE).build();
 
         fields.add(fieldSpec);
 
         for(Transition t : transitions) {
             if(!t.getGuard().equals("")) { // if there is a guard, add guard variables
-                fields.add(getGuardField(t.getGuard()));
+                guardNames.add(t.getGuard().split(" ")[0]);
             }
         }
+        fields.addAll(getGuardField(guardNames));
 
         /* add local variable */
         for(String s : parameters) {
@@ -70,10 +73,15 @@ public class BasicSkeletonGeneration {
 
         return fields;
     }
-    private static FieldSpec getGuardField(String name) {
-        FieldSpec.Builder builder = FieldSpec.builder(TypeName.BOOLEAN, name).addModifiers(Modifier.PRIVATE);
+    private static ArrayList<FieldSpec> getGuardField(Set<String> guards) {
 
-        return builder.build();
+        ArrayList<FieldSpec> Guards = new ArrayList<>();
+
+        for(String g : guards) {
+            Guards.add(FieldSpec.builder(TypeName.BOOLEAN, g).addModifiers(Modifier.PRIVATE).build());
+        }
+
+        return Guards;
     }
 
 }

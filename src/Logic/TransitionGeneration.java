@@ -9,92 +9,66 @@ import com.squareup.javapoet.TypeVariableName;
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class TransitionGeneration {
 
-
-    public static ArrayList<MethodSpec> getTransition(ArrayList<Transition> transitions, Set<Synchronization> allTransition) {
-
+    public static ArrayList<MethodSpec> getTransition(ArrayList<Transition> transitions, Set<Synchronization> synchronizations) { //return transition code
+        ArrayList<MethodSpec> results = new ArrayList<>();
         Set<String> dependentClass = new HashSet<>();
-        ArrayList<MethodSpec> trans = new ArrayList<>();
-        Set<String> transitionNames = new HashSet<>();
-
-        for(Transition t : transitions) {
-            char last = getLastChar(t.getTrigger());
-            if (last == '!' || last == '?') {
-                transitionNames.add(getMethodName(t.getTrigger()));
-            }
-            else {
-                transitionNames.add(t.getTrigger());
-            }
-        }
+        Set<String> normalTriggerNames = new HashSet<>();
+        Set<String> sendTriggerNames = new HashSet<>();
+        Set<String> receiveTriggerNames = new HashSet<>();
 
         for(Transition t : transitions) {
             char last = getLastChar(t.getTrigger());
             if (last == '!') {
-                for(Synchronization s : allTransition) {
-                    if(getLastChar(s.getTrigger()) == '?') {
-                        dependentClass.add(s.getName());
-                    }
+                sendTriggerNames.add(getMethodName(t.getTrigger()));
+            }
+            else if (last == '?') {
+                receiveTriggerNames.add(getMethodName(t.getTrigger()));
+            }
+            else {
+                normalTriggerNames.add(t.getTrigger());
+            }
+        }
+
+        for(String eachTrigger : normalTriggerNames) {
+            results.add(getTransitionCode(transitions,eachTrigger));
+        }
+        for(String eachTrigger : receiveTriggerNames) {
+            results.add(getTransitionCode(transitions,eachTrigger));
+        }
+        for(String eachTrigger : sendTriggerNames) {
+            for(Synchronization synchronization : synchronizations) {
+                if(eachTrigger.equals(getMethodName(synchronization.getTrigger()))) {
+                    dependentClass.add(synchronization.getName());
                 }
             }
-        }
-        Iterator<String> it = transitionNames.iterator();
-
-        while(it.hasNext()) {
-            trans.add(getEachTransition(transitions,it.next(),dependentClass));
+            results.add(getSendTransitionCode(transitions,eachTrigger,dependentClass));
+            dependentClass.clear();
         }
 
-        return trans;
+        return results;
     }
 
-    public static ArrayList<MethodSpec> getAction(ArrayList<Transition> transitions) {
+    private static MethodSpec getSendTransitionCode(ArrayList<Transition> transitions, String curTriggerName, Set<String> dependentClass) {
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(curTriggerName).addModifiers(Modifier.PUBLIC).returns(boolean.class);
 
-        ArrayList<MethodSpec> actions = new ArrayList<>();
 
-        for (Transition t : transitions) {
-            if(!t.getAction().equals("NoAction")) {
-                String[] actionList= t.getAction().split(",");
-                for(String s : actionList) {
-                    actions.add(getEachAction(s));
-                }
-            }
-        }
-        return actions;
-    }
-
-    private static MethodSpec getEachAction(String s) {
-        MethodSpec.Builder builder = MethodSpec.methodBuilder(s).addModifiers(Modifier.PRIVATE);
-
-        return builder.build();
-
-    }
-
-    private static MethodSpec getEachTransition(ArrayList<Transition> transitions, String name, Set<String> dependentClass) {
-        MethodSpec.Builder builder = MethodSpec.methodBuilder(name).addModifiers(Modifier.PUBLIC).returns(boolean.class);
-
-        for(String s : dependentClass) {
-            builder.addParameter(TypeVariableName.get(s), getFirstChar(s)).build();
+        for(String dependentClassName : dependentClass) {
+            builder.addParameter(TypeVariableName.get(dependentClassName), getFirstChar(dependentClassName)).build();
         }
 
-        ArrayList<Transition> curTransitions = new ArrayList<>();
-
-        for(Transition t : transitions) {
-            if(getMethodName(t.getTrigger()).equals(name)) {
-                curTransitions.add(t);
-            }
-        }
-
-        CodeBlock transitionCode = getEachTransitionCode(curTransitions,dependentClass);
+        CodeBlock transitionCode = getSendTransitionLogicCode(transitions,curTriggerName,dependentClass);
 
         builder.addCode(transitionCode);
+
         return builder.build();
 
     }
 
-    private static CodeBlock getEachTransitionCode(ArrayList<Transition> curTransitions, Set<String> dependentClass) {
+    private static CodeBlock getSendTransitionLogicCode(ArrayList<Transition> transitions, String curTriggerName, Set<String> dependentClass) {
         boolean isGuard;
         boolean isProbability;
 
@@ -104,45 +78,115 @@ public class TransitionGeneration {
         builder.addStatement("Status aStatus = status");
         builder.beginControlFlow("switch(aStatus)");
 
-        for(Transition t : curTransitions) {
-            isGuard = false;
-            isProbability = false;
+        for(Transition t : transitions) {
+            if (getMethodName(t.getTrigger()).equals(curTriggerName)) {
+                isGuard = false;
+                isProbability = false;
 
-            if(!t.getGuard().equals("")) {
-                isGuard = true;
-            }
-
-            builder.beginControlFlow("case " + t.getFrom() + ":");
-
-            if(Double.parseDouble(t.getProbability()) < 1) {
-                isProbability = true;
-            }
-
-            if (isGuard) {
-                builder.beginControlFlow("if(" + t.getGuard() + ")");
-            }
-
-            if (isProbability) {
-                builder.beginControlFlow("if(Math.random() < " + t.getProbability() + ")");
-            }
-
-            for(String s : dependentClass) {
-                builder.addStatement(getFirstChar(s) + "." + getMethodName(t.getTrigger()) + "()");
-            } //call dependent classes.
-
-            if(!t.getAction().equals("NoAction")) {
-                String[] actionList = t.getAction().split(",");
-                for(String s : actionList) {
-                    builder.addStatement(s + "()");
+                if (!t.getGuard().equals("")) {
+                    isGuard = true;
                 }
-            }
 
-            builder.addStatement("setStatus(Status." + t.getTo() + ")");
-            builder.addStatement("wasEventProcessed = true");
-            builder.addStatement("break");
-            if(isProbability) builder.endControlFlow();
-            if(isGuard) builder.endControlFlow();
-            builder.endControlFlow();
+                builder.beginControlFlow("case " + t.getFrom() + ":");
+
+                if (Double.parseDouble(t.getProbability()) < 1) {
+                    isProbability = true;
+                }
+
+                if (isGuard) {
+                    builder.beginControlFlow("if(" + t.getGuard() + ")");
+                }
+
+                if (isProbability) {
+                    builder.beginControlFlow("if(Math.random() < " + t.getProbability() + ")");
+                }
+
+                for (String dependentClassName : dependentClass) {
+                    builder.addStatement(getFirstChar(dependentClassName) + "." + getMethodName(t.getTrigger()) + "()");
+                } //call dependent classes.
+
+                if (!t.getAction().equals("NoAction")) {
+                    String[] actionList = t.getAction().split(",");
+                    for (String s : actionList) {
+                        builder.addStatement(s + "()");
+                    }
+                }
+
+
+                builder.addStatement("setStatus(Status." + t.getTo() + ")");
+                builder.addStatement("wasEventProcessed = true");
+                builder.addStatement("break");
+                if (isProbability) builder.endControlFlow();
+                if (isGuard) builder.endControlFlow();
+                builder.endControlFlow();
+            }
+        }
+
+        builder.endControlFlow();
+
+        builder.addStatement("return wasEventProcessed");
+
+        return builder.build();
+    }
+
+    private static MethodSpec getTransitionCode(ArrayList<Transition> transitions, String curTriggerName) {
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(curTriggerName).addModifiers(Modifier.PUBLIC).returns(boolean.class);
+
+        CodeBlock transitionCode = getTransitionLogicCode(transitions,curTriggerName);
+
+        builder.addCode(transitionCode);
+
+        return builder.build();
+
+    }
+
+    private static CodeBlock getTransitionLogicCode(ArrayList<Transition> transitions, String curTriggerName) {
+        boolean isGuard;
+        boolean isProbability;
+
+        CodeBlock.Builder builder = CodeBlock.builder();
+
+        builder.addStatement("boolean wasEventProcessed = false");
+        builder.addStatement("Status aStatus = status");
+        builder.beginControlFlow("switch(aStatus)");
+
+        for(Transition t : transitions) {
+            if (getMethodName(t.getTrigger()).equals(curTriggerName)) {
+                isGuard = false;
+                isProbability = false;
+
+                if (!t.getGuard().equals("")) {
+                    isGuard = true;
+                }
+
+                builder.beginControlFlow("case " + t.getFrom() + ":");
+
+                if (Double.parseDouble(t.getProbability()) < 1) {
+                    isProbability = true;
+                }
+
+                if (isGuard) {
+                    builder.beginControlFlow("if(" + t.getGuard() + ")");
+                }
+
+                if (isProbability) {
+                    builder.beginControlFlow("if(Math.random() < " + t.getProbability() + ")");
+                }
+
+                if (!t.getAction().equals("NoAction")) {
+                    String[] actionList = t.getAction().split(",");
+                    for (String s : actionList) {
+                        builder.addStatement(s + "()");
+                    }
+                }
+
+                builder.addStatement("setStatus(Status." + t.getTo() + ")");
+                builder.addStatement("wasEventProcessed = true");
+                builder.addStatement("break");
+                if (isProbability) builder.endControlFlow();
+                if (isGuard) builder.endControlFlow();
+                builder.endControlFlow();
+            }
         }
 
         builder.endControlFlow();
@@ -172,5 +216,4 @@ public class TransitionGeneration {
     private static String getFirstChar(String str) {
         return String.valueOf(str.charAt(0));
     }
-
 }
