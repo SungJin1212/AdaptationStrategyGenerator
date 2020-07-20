@@ -21,6 +21,7 @@ public class CodeGenerator {
 
     public static void main(String[] args) {
 
+
         Set<Synchronization> AllTransition = new HashSet<>();
         ArrayList<String> urlList = new ArrayList<>();
 //        urlList.add("Human.xml");
