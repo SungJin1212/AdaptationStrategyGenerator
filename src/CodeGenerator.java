@@ -27,7 +27,7 @@ public class CodeGenerator {
 //        urlList.add("Human.xml");
 //        urlList.add("bulb.xml");
 
-        urlList.add("MoppingRobot.xml");
+        urlList.add("MoppingRobot2.xml");
         urlList.add("SweepingRobot.xml");
         urlList.add("Tile.xml");
 
@@ -56,8 +56,12 @@ public class CodeGenerator {
             ArrayList<State> States = getStateInformation(url); //get state information
             ArrayList<Transition> Transitions = getTransitionInformation(url); //get transition information
             ArrayList<String> Parameters = getParameterInformation(url);
+            String actionCode = getActionCode(url);
+
+
 
             /* print parsed data */
+
             System.out.println("State Machine: " + url);
             for (State s : States) {
                 System.out.println(String.format("State: %s %s", s.getInitialState(), s.getStateName()));
@@ -73,12 +77,12 @@ public class CodeGenerator {
 
 
 
-            codeGeneration(url, States, Transitions, Parameters,AllTransition);
+            codeGeneration(url,actionCode, States, Transitions, Parameters,AllTransition);
         }
 
     }
 
-    private static void codeGeneration(String url, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
+    private static void codeGeneration(String url, String actionCode, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
 
 
         String className = url.substring(0,url.lastIndexOf(".")); //get state machine name
@@ -93,7 +97,7 @@ public class CodeGenerator {
 
         ArrayList<FieldSpec> fields = getFieldSpec(transitions,parameters); //get field variable
         ArrayList<MethodSpec> trans = getTransition(transitions,allTransition); // get transition code
-        ArrayList<MethodSpec> actions = getAction(transitions);
+        ArrayList<MethodSpec> actions = getAction(transitions,actionCode);
 
         TypeSpec typeSpec = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
