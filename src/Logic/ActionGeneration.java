@@ -30,7 +30,7 @@ public class ActionGeneration {
         int idx = actionCode.lastIndexOf(actionName);
         if (idx != -1) {
             idx += actionName.length();
-            System.out.println(actionCode.charAt(idx));
+            //System.out.println(actionCode.charAt(idx));
             int startIdx = 0, endIdx = 0;
 
             for (int i = idx; i <= actionCode.length(); i++) {

@@ -11,12 +11,22 @@ import java.util.Set;
 
 public class BasicSkeletonGeneration {
 
+    /**
+     *
+     * @return MethodSpec which contains the Setter of the state machine code
+     */
     public static MethodSpec getSetter() {
         CodeBlock setterCode = CodeBlock.builder().addStatement("status = aStatus").build();
         return MethodSpec.methodBuilder("setStatus").addParameter(TypeVariableName.get("Status"), "aStatus").addCode(setterCode).addModifiers(Modifier.PRIVATE).build();
     }
 
-    public static MethodSpec getConstructor(String className, String initialStateName, ArrayList<String> parameters) {
+    /**
+     *
+     * @param initialStateName initial state name
+     * @param parameters parsed parameter data
+     * @return MethodSpec which contains the Constructor of the state machine code
+     */
+    public static MethodSpec getConstructor(String initialStateName, ArrayList<String> parameters) {
         MethodSpec.Builder builder = MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC);
 
         CodeBlock constructorCode = CodeBlock.builder().addStatement("setStatus(Status." + initialStateName + ")").build();
@@ -30,6 +40,10 @@ public class BasicSkeletonGeneration {
         return builder.build();
     }
 
+    /**
+     *
+     * @return MethodSpec which contains the Getter of the state machine code
+     */
     public static MethodSpec getGetter() {
         CodeBlock getterCode = CodeBlock.builder().addStatement("return status").build();
         return MethodSpec.methodBuilder("getStatus").addModifiers(Modifier.PUBLIC).returns(TypeVariableName.get("Status")).addCode(getterCode).build();
@@ -43,6 +57,11 @@ public class BasicSkeletonGeneration {
         return builder.build();
     }
 
+    /**
+     *
+     * @param states parsed state data
+     * @return initial state name
+     */
     public static String getInitialStateName(ArrayList<State> states) {
         String Name = "";
         for (State s : states) {
@@ -52,10 +71,18 @@ public class BasicSkeletonGeneration {
         }
         return Name;
     }
+
+    /**
+     *
+     * @param transitions: parsed transition data
+     * @param parameters: parsed parameter data
+     * @return list of fieldSpecs which contain guards, parameters
+     */
     public static ArrayList<FieldSpec> getFieldSpec(ArrayList<Transition> transitions, ArrayList<String> parameters) {
         ArrayList<FieldSpec> fields = new ArrayList<>();
         Set <String> guardNames = new HashSet<>(); // to remove duplicate guards ex) guard1 == true, guard1 == false, our goal is to extract the "guard1"
         FieldSpec fieldSpec = FieldSpec.builder(TypeVariableName.get("Status"), "status").addModifiers(Modifier.PRIVATE).build();
+
 
         fields.add(fieldSpec);
 
@@ -73,6 +100,12 @@ public class BasicSkeletonGeneration {
 
         return fields;
     }
+
+    /**
+     *
+     * @param guards: list of names of guards
+     * @return list of fieldSpecs which contain field information of each guards
+     */
     private static ArrayList<FieldSpec> getGuardField(Set<String> guards) {
 
         ArrayList<FieldSpec> Guards = new ArrayList<>();

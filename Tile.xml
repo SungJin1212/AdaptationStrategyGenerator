@@ -59,6 +59,7 @@ TABLE
 <ATTRIBUTE name="Position" type="STRING">NODE x:5.5cm y:4cm index:6</ATTRIBUTE>
 <ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Parameters" type="STRING">x,y</ATTRIBUTE>
+<ATTRIBUTE name="LocalVariables" type="STRING"></ATTRIBUTE>
 </INSTANCE>
 <INSTANCE id="obj.72845" class="State" name="Mopped">
 <ATTRIBUTE name="Position" type="STRING">NODE x:9cm y:17cm index:7</ATTRIBUTE>

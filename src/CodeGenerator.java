@@ -14,6 +14,7 @@ import java.util.Set;
 import static Logic.ActionGeneration.getAction;
 import static Logic.AnnotationGeneration.getAnnotation;
 import static Logic.BasicSkeletonGeneration.*;
+import static Logic.LocalVariableGeneration.getLocalFieldSpec;
 import static Logic.TransitionGeneration.getTransition;
 import static Parser.Parser.*;
 
@@ -24,10 +25,12 @@ public class CodeGenerator {
 
         Set<Synchronization> AllTransition = new HashSet<>();
         ArrayList<String> urlList = new ArrayList<>();
+
 //        urlList.add("Human.xml");
 //        urlList.add("bulb.xml");
+//        urlList.add("MoppingRobot_LocalVariableExtended.xml");
 
-        urlList.add("MoppingRobot2.xml");
+        urlList.add("MoppingRobot.xml");
         urlList.add("SweepingRobot.xml");
         urlList.add("Tile.xml");
 
@@ -57,6 +60,7 @@ public class CodeGenerator {
             ArrayList<Transition> Transitions = getTransitionInformation(url); //get transition information
             ArrayList<String> Parameters = getParameterInformation(url);
             String actionCode = getActionCode(url);
+            ArrayList<String> localVariables = getLocalVariableInformation(url);
 
 
 
@@ -77,32 +81,36 @@ public class CodeGenerator {
 
 
 
-            codeGeneration(url,actionCode, States, Transitions, Parameters,AllTransition);
+            codeGeneration(url,actionCode, localVariables, States, Transitions, Parameters,AllTransition);
         }
 
     }
 
-    private static void codeGeneration(String url, String actionCode, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
+
+
+    private static void codeGeneration(String url, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
 
 
         String className = url.substring(0,url.lastIndexOf(".")); //get state machine name
         String initialStateName = getInitialStateName(states); // get name of the initial state
         TypeSpec enumTypeSpec = enumGeneration(states); //enum generation
 
-        MethodSpec constructor = getConstructor(className, initialStateName,parameters); //get "constructor" code
+        MethodSpec constructor = getConstructor(initialStateName,parameters); //get "constructor" code
         MethodSpec getter = getGetter(); // get "getter" code
         MethodSpec setter = getSetter(); // get "setter" code
 
         CodeBlock annotations = getAnnotation(url); // get annotations
 
-        ArrayList<FieldSpec> fields = getFieldSpec(transitions,parameters); //get field variable
+        ArrayList<FieldSpec> GuardsParametersFields = getFieldSpec(transitions,parameters); //get field variable
+        ArrayList<FieldSpec> LocalVariablesFields = getLocalFieldSpec(localVariables);
         ArrayList<MethodSpec> trans = getTransition(transitions,allTransition); // get transition code
         ArrayList<MethodSpec> actions = getAction(transitions,actionCode);
 
         TypeSpec typeSpec = TypeSpec.classBuilder(className)
                 .addModifiers(Modifier.PUBLIC)
                 .addType(enumTypeSpec)
-                .addFields(fields)
+                .addFields(LocalVariablesFields)
+                .addFields(GuardsParametersFields)
                 .addMethods(Arrays.asList(constructor,getter,setter))
                 .addMethods(trans)
                 .addMethods(actions)

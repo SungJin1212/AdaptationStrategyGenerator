@@ -33,8 +33,8 @@ public class Parser {
 
                 if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("Configuration")) {
                     if(!nList.item(2).getTextContent().equals("")) {
-                        String allparameter = nList.item(2).getTextContent();
-                        String[] parameters = allparameter.split(",");
+                        String parsedParameter = nList.item(2).getTextContent();
+                        String[] parameters = parsedParameter.split(",");
                         parameterList.addAll(Arrays.asList(parameters));
                     }
                 }
@@ -44,6 +44,39 @@ public class Parser {
         }
 
         return parameterList;
+    }
+
+    public static ArrayList<String> getLocalVariableInformation(String url) {
+        ArrayList<String> localVariables = new ArrayList<>();
+
+        try {
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document document = builder.parse(url);
+
+            Element rootElement = document.getDocumentElement();
+            NodeList instanceNodes = rootElement.getElementsByTagName("INSTANCE");
+
+            for (int i=0; i<instanceNodes.getLength(); i++) {
+                Element e = (Element) instanceNodes.item(i);
+
+                NodeList nList = e.getElementsByTagName("ATTRIBUTE");
+
+                if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("Configuration")) {
+                    if(!nList.item(3).getTextContent().equals("")) {
+                        String parsedLocalVariables = nList.item(3).getTextContent();
+                        localVariables.addAll(Arrays.asList(parsedLocalVariables.split(";")));
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return localVariables;
     }
 
     public static String getActionCode(String url) {
@@ -179,6 +212,6 @@ public class Parser {
         }
 
         return TransitionList;
-
     }
+
 }
