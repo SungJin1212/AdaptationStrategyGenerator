@@ -1,3 +1,5 @@
+package CodeGenerator;
+
 import Data.State;
 import Data.Synchronization;
 import Data.Transition;
@@ -25,7 +27,7 @@ public class CodeGenerator {
 
         Set<Synchronization> AllTransition = new HashSet<>();
         ArrayList<String> urlList = new ArrayList<>();
-
+//
 //        urlList.add("Human.xml");
 //        urlList.add("bulb.xml");
 //        urlList.add("MoppingRobot_LocalVariableExtended.xml");
@@ -117,7 +119,7 @@ public class CodeGenerator {
                 .addJavadoc(annotations)
                 .build();
 
-        JavaFile javaFile = JavaFile.builder("GeneratedCode", typeSpec)
+        JavaFile javaFile = JavaFile.builder("GeneratedCSs", typeSpec)
                 .build();
         try {
             javaFile.writeTo(Paths.get("./src"));
