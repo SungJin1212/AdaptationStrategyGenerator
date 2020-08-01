@@ -1,8 +1,8 @@
 package CodeGenerator;
 
-import Data.State;
-import Data.Synchronization;
-import Data.Transition;
+import XMLParseDataType.State;
+import XMLParseDataType.Synchronization;
+import XMLParseDataType.Transition;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
@@ -119,7 +119,7 @@ public class CodeGenerator {
                 .addJavadoc(annotations)
                 .build();
 
-        JavaFile javaFile = JavaFile.builder("GeneratedCSs", typeSpec)
+        JavaFile javaFile = JavaFile.builder("GeneratedCode", typeSpec)
                 .build();
         try {
             javaFile.writeTo(Paths.get("./src"));

@@ -1,7 +1,7 @@
 package Logic;
 
-import Data.State;
-import Data.Transition;
+import XMLParseDataType.State;
+import XMLParseDataType.Transition;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;

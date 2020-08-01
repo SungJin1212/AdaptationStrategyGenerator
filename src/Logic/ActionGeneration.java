@@ -1,6 +1,6 @@
 package Logic;
 
-import Data.Transition;
+import XMLParseDataType.Transition;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 

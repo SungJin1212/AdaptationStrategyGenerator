@@ -1,4 +1,4 @@
-package Data;
+package XMLParseDataType;
 
 public class Transition {
     private String from;

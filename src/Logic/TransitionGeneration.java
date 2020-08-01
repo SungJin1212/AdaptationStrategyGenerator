@@ -1,7 +1,7 @@
 package Logic;
 
-import Data.Synchronization;
-import Data.Transition;
+import XMLParseDataType.Synchronization;
+import XMLParseDataType.Transition;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeVariableName;
@@ -169,9 +169,9 @@ public class TransitionGeneration {
                     builder.beginControlFlow("if(" + t.getGuard() + ")");
                 }
 
-                if (isProbability) {
-                    builder.beginControlFlow("if(Math.random() < " + t.getProbability() + ")");
-                }
+//                if (isProbability) {
+//                    builder.beginControlFlow("if(Math.random() < " + t.getProbability() + ")");
+//                }
 
                 if (!t.getAction().equals("NoAction")) {
                     String[] actionList = t.getAction().split(",");
@@ -183,7 +183,7 @@ public class TransitionGeneration {
                 builder.addStatement("setStatus(Status." + t.getTo() + ")");
                 builder.addStatement("wasEventProcessed = true");
                 builder.addStatement("break");
-                if (isProbability) builder.endControlFlow();
+//                if (isProbability) builder.endControlFlow();
                 if (isGuard) builder.endControlFlow();
                 builder.endControlFlow();
             }

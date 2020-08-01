@@ -1,6 +1,6 @@
 package Logic;
 
-import Data.LocalVariable;
+import XMLParseDataType.LocalVariable;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeVariableName;
 

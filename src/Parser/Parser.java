@@ -1,7 +1,7 @@
 package Parser;
 
-import Data.State;
-import Data.Transition;
+import XMLParseDataType.State;
+import XMLParseDataType.Transition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
