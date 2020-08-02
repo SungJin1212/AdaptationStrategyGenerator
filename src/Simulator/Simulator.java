@@ -1,7 +1,6 @@
 package Simulator;
 
-import AbstactClass.CS;
-import AbstactClass.SoS;
+import Model.AbstactClass.SoS;
 
 public class Simulator {
 

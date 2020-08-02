@@ -1,5 +1,5 @@
-import AbstactClass.SoS;
-import GeneratedCode.cleaningSoS;
+import Model.AbstactClass.SoS;
+import Model.GeneratedCode.cleaningSoS;
 import Simulator.Simulator;
 
 public class main {

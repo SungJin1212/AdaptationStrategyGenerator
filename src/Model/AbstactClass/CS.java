@@ -1,4 +1,4 @@
-package AbstactClass;
+package Model.AbstactClass;
 
 abstract public class CS {
 

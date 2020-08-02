@@ -1,4 +1,4 @@
-package AbstactClass;
+package Model.AbstactClass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 abstract public class SoS {
 
-    protected ArrayList<CS> csList;
+    public static ArrayList<CS> csList;
     public static Map<String, Environment> environmentList;
 
     public SoS() {

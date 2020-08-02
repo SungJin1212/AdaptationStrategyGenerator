@@ -1,4 +1,4 @@
-package Logic;
+package CodeGeneration.CodeGenerationLogic;
 
 import com.squareup.javapoet.CodeBlock;
 

@@ -1,8 +1,10 @@
-package CodeGenerator;
+package CodeGeneration;
 
-import XMLParseDataType.State;
-import XMLParseDataType.Synchronization;
-import XMLParseDataType.Transition;
+import CodeGeneration.XMLParseDataType.State;
+import CodeGeneration.XMLParseDataType.Synchronization;
+import CodeGeneration.XMLParseDataType.Transition;
+import Model.AbstactClass.CS;
+import Model.AbstactClass.Environment;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
@@ -13,12 +15,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static Logic.ActionGeneration.getAction;
-import static Logic.AnnotationGeneration.getAnnotation;
-import static Logic.BasicSkeletonGeneration.*;
-import static Logic.LocalVariableGeneration.getLocalFieldSpec;
-import static Logic.TransitionGeneration.getTransition;
-import static Parser.Parser.*;
+import static CodeGeneration.CodeGenerationLogic.ActionGeneration.getAction;
+import static CodeGeneration.CodeGenerationLogic.AnnotationGeneration.getAnnotation;
+import static CodeGeneration.CodeGenerationLogic.BasicSkeletonGeneration.*;
+import static CodeGeneration.CodeGenerationLogic.LocalVariableGeneration.getLocalFieldSpec;
+import static CodeGeneration.CodeGenerationLogic.RunGeneration.getRun;
+import static CodeGeneration.CodeGenerationLogic.TimeVariableGeneration.getTimeFieldSpec;
+import static CodeGeneration.CodeGenerationLogic.TransitionGeneration.getTransition;
+import static CodeGeneration.Parser.Parser.*;
 
 public class CodeGenerator {
 
@@ -45,7 +49,7 @@ public class CodeGenerator {
                     AllTransition.add(new Synchronization(url.substring(0, url.lastIndexOf(".")), t.getTrigger()));
                 }
             }
-        }
+        } //모든 model에서 "?" 있는 채널 검사 후 "AllTransition"에 추가
 
 
         /*print Synchronization classes */
@@ -62,6 +66,7 @@ public class CodeGenerator {
             ArrayList<Transition> Transitions = getTransitionInformation(url); //get transition information
             ArrayList<String> Parameters = getParameterInformation(url);
             String actionCode = getActionCode(url);
+            String type = getType(url);
             ArrayList<String> localVariables = getLocalVariableInformation(url);
 
 
@@ -69,8 +74,9 @@ public class CodeGenerator {
             /* print parsed data */
 
             System.out.println("State Machine: " + url);
+            System.out.println(type);
             for (State s : States) {
-                System.out.println(String.format("State: %s %s", s.getInitialState(), s.getStateName()));
+                System.out.println(String.format("State: %s %s %s", s.getInitialState(), s.getStateName(), s.getTime()));
             }
             for (Transition t : Transitions) {
                 System.out.println(String.format("Transition: %s %s %s %s %s %s", t.getFrom(), t.getTo(), t.getGuard(), t.getProbability(), t.getAction(), t.getTrigger()));
@@ -83,43 +89,63 @@ public class CodeGenerator {
 
 
 
-            codeGeneration(url,actionCode, localVariables, States, Transitions, Parameters,AllTransition);
+            codeGeneration(url,type,actionCode, localVariables, States, Transitions, Parameters,AllTransition);
         }
 
     }
 
 
 
-    private static void codeGeneration(String url, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
+    private static void codeGeneration(String url, String type, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
 
 
         String className = url.substring(0,url.lastIndexOf(".")); //get state machine name
         String initialStateName = getInitialStateName(states); // get name of the initial state
         TypeSpec enumTypeSpec = enumGeneration(states); //enum generation
 
-        MethodSpec constructor = getConstructor(initialStateName,parameters); //get "constructor" code
+        MethodSpec constructor = getConstructor(initialStateName,parameters,states); //get "constructor" code
         MethodSpec getter = getGetter(); // get "getter" code
         MethodSpec setter = getSetter(); // get "setter" code
+
 
         CodeBlock annotations = getAnnotation(url); // get annotations
 
         ArrayList<FieldSpec> GuardsParametersFields = getFieldSpec(transitions,parameters); //get field variable
         ArrayList<FieldSpec> LocalVariablesFields = getLocalFieldSpec(localVariables);
+        ArrayList<FieldSpec> TimeVariablesFields = getTimeFieldSpec(states);
         ArrayList<MethodSpec> trans = getTransition(transitions,allTransition); // get transition code
         ArrayList<MethodSpec> actions = getAction(transitions,actionCode);
 
-        TypeSpec typeSpec = TypeSpec.classBuilder(className)
-                .addModifiers(Modifier.PUBLIC)
+        //MethodSpec.Builder builder = MethodSpec.methodBuilder(curTriggerName).addModifiers(Modifier.PUBLIC).returns(boolean.class);
+
+
+        TypeSpec.Builder builder = TypeSpec.classBuilder(className);
+
+        builder.addModifiers(Modifier.PUBLIC)
                 .addType(enumTypeSpec)
                 .addFields(LocalVariablesFields)
                 .addFields(GuardsParametersFields)
+                .addFields(TimeVariablesFields)
                 .addMethods(Arrays.asList(constructor,getter,setter))
                 .addMethods(trans)
                 .addMethods(actions)
-                .addJavadoc(annotations)
-                .build();
+                .addJavadoc(annotations);
 
-        JavaFile javaFile = JavaFile.builder("GeneratedCode", typeSpec)
+        if(type.equals("CS")) {
+            builder.superclass(CS.class);
+            MethodSpec run = getRun(states,transitions,allTransition);
+            builder.addMethod(run);
+        }
+        else if (type.equals("Environment")) {
+            builder.superclass(Environment.class);
+
+        }
+        builder.build();
+
+
+
+
+        JavaFile javaFile = JavaFile.builder("Model.GeneratedCode", builder.build())
                 .build();
         try {
             javaFile.writeTo(Paths.get("./src"));
@@ -127,6 +153,8 @@ public class CodeGenerator {
             System.out.println(e.getLocalizedMessage());
         }
     }
+
+
 
 
 }

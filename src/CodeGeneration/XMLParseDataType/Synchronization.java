@@ -1,4 +1,4 @@
-package XMLParseDataType;
+package CodeGeneration.XMLParseDataType;
 
 public class Synchronization {
     String name;

@@ -1,8 +1,10 @@
-package GeneratedCode;
+package Model.GeneratedCode;
 
-import AbstactClass.SoS;
+import Model.AbstactClass.SoS;
 
 public class cleaningSoS extends SoS {
+
+    static int dust = 3;
 
     public cleaningSoS() {
         super();

@@ -1,7 +1,7 @@
-package Logic;
+package CodeGeneration.CodeGenerationLogic;
 
-import XMLParseDataType.State;
-import XMLParseDataType.Transition;
+import CodeGeneration.XMLParseDataType.State;
+import CodeGeneration.XMLParseDataType.Transition;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
@@ -24,9 +24,11 @@ public class BasicSkeletonGeneration {
      *
      * @param initialStateName initial state name
      * @param parameters parsed parameter data
+     * @param states
      * @return MethodSpec which contains the Constructor of the state machine code
      */
-    public static MethodSpec getConstructor(String initialStateName, ArrayList<String> parameters) {
+    public static MethodSpec getConstructor(String initialStateName, ArrayList<String> parameters, ArrayList<State> states) {
+        String timeName = "";
         MethodSpec.Builder builder = MethodSpec.constructorBuilder().addModifiers(Modifier.PUBLIC);
 
         CodeBlock constructorCode = CodeBlock.builder().addStatement("setStatus(Status." + initialStateName + ")").build();
@@ -35,6 +37,12 @@ public class BasicSkeletonGeneration {
         for(String parameter : parameters) {
             builder.addParameter(TypeName.INT, parameter);
             builder.addStatement("this." + parameter + " = " + parameter);
+        }
+        for(State s : states) {
+            if(!s.getTime().equals("1")) {
+                timeName = s.getStateName() + "Time";
+                builder.addStatement("this." + timeName + " = " + s.getTime());
+            }
         }
 
         return builder.build();

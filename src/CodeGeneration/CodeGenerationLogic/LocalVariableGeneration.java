@@ -1,6 +1,6 @@
-package Logic;
+package CodeGeneration.CodeGenerationLogic;
 
-import XMLParseDataType.LocalVariable;
+import CodeGeneration.XMLParseDataType.LocalVariable;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.TypeVariableName;
 

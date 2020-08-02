@@ -1,6 +1,6 @@
-package Logic;
+package CodeGeneration.CodeGenerationLogic;
 
-import XMLParseDataType.Transition;
+import CodeGeneration.XMLParseDataType.Transition;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 

@@ -1,7 +1,7 @@
-package Parser;
+package CodeGeneration.Parser;
 
-import XMLParseDataType.State;
-import XMLParseDataType.Transition;
+import CodeGeneration.XMLParseDataType.State;
+import CodeGeneration.XMLParseDataType.Transition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -110,6 +110,38 @@ public class Parser {
         return actionCode;
     }
 
+    public static String getType(String url) {
+        String type = "";
+
+        try {
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document document = builder.parse(url);
+
+            Element rootElement = document.getDocumentElement();
+            NodeList instanceNodes = rootElement.getElementsByTagName("INSTANCE");
+
+            for (int i=0; i<instanceNodes.getLength(); i++) {
+                Element e = (Element) instanceNodes.item(i);
+
+                NodeList nList = e.getElementsByTagName("ATTRIBUTE");
+
+                if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("Configuration")) {
+                    if(!nList.item(4).getTextContent().equals("")) {
+                        type = nList.item(4).getTextContent();
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return type;
+    }
 
 
     public static ArrayList<State> getStateInformation(String url) {
@@ -133,7 +165,8 @@ public class Parser {
 
                 if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("State")) {
                     s.setStateName(nList.item(0).getParentNode().getAttributes().getNamedItem("name").getNodeValue());
-                    s.setInitialState( nList.item(6).getTextContent());
+                    s.setInitialState( nList.item(6).getTextContent()); // Initial State
+                    s.setTime(nList.item(7).getTextContent()); // Time
                     StateList.add(s);
                 }
             }
