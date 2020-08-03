@@ -1,4 +1,4 @@
-package Model.GeneratedCode;
+package Model.GeneratedCode.SoS;
 
 import Model.AbstactClass.SoS;
 
@@ -17,8 +17,8 @@ public class cleaningSoS extends SoS {
     }
 
     private void AddCSs() {
-        addCS(new MoppingRobot());
-        addCS(new SweepingRobot());
+        csList.put("MoppingRobot1", new MoppingRobot());
+        csList.put("SweepingRobot1", new SweepingRobot());
     }
 
     private void AddEnvironments() {

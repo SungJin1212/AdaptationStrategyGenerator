@@ -136,7 +136,7 @@ public class CodeGenerator {
             MethodSpec run = getRun(states,transitions,allTransition);
             builder.addMethod(run);
         }
-        else if (type.equals("Environment")) {
+        else if (type.equals("EnvironmentCondition")) {
             builder.superclass(Environment.class);
 
         }
@@ -145,7 +145,7 @@ public class CodeGenerator {
 
 
 
-        JavaFile javaFile = JavaFile.builder("Model.GeneratedCode", builder.build())
+        JavaFile javaFile = JavaFile.builder("Model.GeneratedCode.Behavior", builder.build())
                 .build();
         try {
             javaFile.writeTo(Paths.get("./src"));

@@ -50,7 +50,21 @@ public class RunGeneration {
                     runCode.endControlFlow();
                 }
             }
-            else {
+            else if (tempTransitions.size() >= 2 && tempTransitions.get(0).getProbability().equals("1")) { //확률이 모두다 1 이지만 guard 로 precondition을 체크해야 하는 경우
+                for (Transition t : tempTransitions) {
+                    if (t.getTrigger().contains("!")) {
+                        String call = getSendCallStatement(allTransition, t);
+                        runCode.addStatement(call);
+                        // 같은 이름인 채널 call. 타입검사 해야됨.
+                    }
+                    else{
+                        runCode.addStatement(t.getTrigger() + "()");
+                    }
+                    runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+                    runCode.addStatement("break");
+                }
+            }
+            else { //확률이 1미만인 transition 들
                 temp = 0;
                 runCode.addStatement("double pro = Math.random()");
                 for(Transition t : tempTransitions) {
