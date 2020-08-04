@@ -89,7 +89,7 @@ public class TransitionGeneration {
 
                 builder.beginControlFlow("case " + t.getFrom() + ":");
 
-                if (Double.parseDouble(t.getProbability()) < 1) {
+                if (!t.getProbability().equals("1")) {
                     isProbability = true;
                 }
 
@@ -153,25 +153,18 @@ public class TransitionGeneration {
         for(Transition t : transitions) {
             if (getMethodName(t.getTrigger()).equals(curTriggerName)) {
                 isGuard = false;
-                isProbability = false;
-
+                
                 if (!t.getGuard().equals("")) {
                     isGuard = true;
                 }
 
                 builder.beginControlFlow("case " + t.getFrom() + ":");
 
-                if (Double.parseDouble(t.getProbability()) < 1) {
-                    isProbability = true;
-                }
 
                 if (isGuard) {
                     builder.beginControlFlow("if(" + t.getGuard() + ")");
                 }
 
-//                if (isProbability) {
-//                    builder.beginControlFlow("if(Math.random() < " + t.getProbability() + ")");
-//                }
 
                 if (!t.getAction().equals("NoAction")) {
                     String[] actionList = t.getAction().split(",");
@@ -183,7 +176,6 @@ public class TransitionGeneration {
                 builder.addStatement("setStatus(Status." + t.getTo() + ")");
                 builder.addStatement("wasEventProcessed = true");
                 builder.addStatement("break");
-//                if (isProbability) builder.endControlFlow();
                 if (isGuard) builder.endControlFlow();
                 builder.endControlFlow();
             }

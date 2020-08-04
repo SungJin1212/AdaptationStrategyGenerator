@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Parser {
+public class BehaviorParser {
 
     public static ArrayList<String> getParameterInformation(String url) {
         ArrayList<String> parameterList = new ArrayList<>();
@@ -180,8 +180,8 @@ public class Parser {
 
     public static ArrayList<Transition> getTransitionInformation(String url) {
         ArrayList <Transition> TransitionList = new ArrayList<>();
-        ArrayList <Transition> From = new ArrayList<>();
-        ArrayList <Transition> To = new ArrayList<>();
+        ArrayList <Transition> FromAssociation = new ArrayList<>();
+        ArrayList <Transition> ToAssociation = new ArrayList<>();
 
         try {
 
@@ -205,6 +205,7 @@ public class Parser {
                 String curGuard = nList.item(1).getTextContent();
                 String curAction = nList.item(2).getTextContent();
                 String curTrigger = nList.item(3).getTextContent();
+
                 String curProbability = nList.item(4).getTextContent();
 
 
@@ -212,12 +213,11 @@ public class Parser {
                     curAction = "NoAction";
                 }
 
-
                 if (curTo.contains("associationState")) {
-                    To.add(new Transition(curFrom,curTo,curGuard,curProbability,curAction,curTrigger));
+                    ToAssociation.add(new Transition(curFrom,curTo,curGuard,curProbability,curAction,curTrigger));
                 }
                 else if (curFrom.contains("associationState")) {
-                    From.add(new Transition(curFrom,curTo,curGuard,curProbability,curAction,curTrigger));
+                    FromAssociation.add(new Transition(curFrom,curTo,curGuard,curProbability,curAction,curTrigger));
                 }
                 else {
                     t.setFrom(curFrom);
@@ -236,10 +236,11 @@ public class Parser {
             e.printStackTrace();
         }
 
-        for(Transition from : From) {
-            for(Transition to : To) {
-                if(from.getTo().equals(to.getFrom())) {
-                    TransitionList.add(new Transition(to.getFrom(),from.getTo(),from.getGuard(),from.getProbability(),from.getAction(),from.getTrigger()));
+        for(Transition to : ToAssociation) {
+            for(Transition from : FromAssociation) {
+                if(to.getTo().equals(from.getFrom())) {
+                    TransitionList.add(new Transition(to.getFrom(),from.getTo(),to.getGuard(),to.getProbability(),to.getAction(),to.getTrigger()));
+                    //TransitionList.add(new Transition(to.getFrom(),from.getTo(),from.getGuard(),from.getProbability(),from.getAction(),from.getTrigger()));
                 }
             }
         }

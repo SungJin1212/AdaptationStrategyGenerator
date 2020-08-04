@@ -11,10 +11,12 @@ public class Simulator {
     }
 
 
-    public void StartSimulation() {
+    public String StartSimulation() {
 
-        for(int t=0; t<=100; t++) {
+        for(int t=1; t<=50; t++) {
             sos.run();
         }
+
+        return sos.getFitness();
     }
 }

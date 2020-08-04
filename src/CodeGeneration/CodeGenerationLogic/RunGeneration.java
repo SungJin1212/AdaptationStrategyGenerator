@@ -29,8 +29,12 @@ public class RunGeneration {
             }
 
             runCode.beginControlFlow("case " + s.getStateName() + ":");
-            runCode.beginControlFlow("if(--$NTime == 0)", s.getStateName());
-
+            if(!s.getTime().equals("1")) { // Time 1이 아니면.
+                runCode.beginControlFlow("if(--$NTime == 0)", s.getStateName());
+            }
+            if(!s.getTime().equals("1")) { // Time 1이 아니면.
+                runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+            }
             if (tempTransitions.size() == 1) {
                 Transition t = tempTransitions.get(0);
                 if(!t.getProbability().equals("1")) {
@@ -44,7 +48,7 @@ public class RunGeneration {
                 else{
                     runCode.addStatement(t.getTrigger() + "()");
                 }
-                runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+
                 runCode.addStatement("break");
                 if(!t.getProbability().equals("1")) {
                     runCode.endControlFlow();
@@ -52,6 +56,7 @@ public class RunGeneration {
             }
             else if (tempTransitions.size() >= 2 && tempTransitions.get(0).getProbability().equals("1")) { //확률이 모두다 1 이지만 guard 로 precondition을 체크해야 하는 경우
                 for (Transition t : tempTransitions) {
+                    runCode.beginControlFlow("if ($N)",t.getGuard());
                     if (t.getTrigger().contains("!")) {
                         String call = getSendCallStatement(allTransition, t);
                         runCode.addStatement(call);
@@ -60,8 +65,11 @@ public class RunGeneration {
                     else{
                         runCode.addStatement(t.getTrigger() + "()");
                     }
-                    runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+                    if(!s.getTime().equals("1")) { // Time 1이 아니면.
+                        runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+                    }
                     runCode.addStatement("break");
+                    runCode.endControlFlow();
                 }
             }
             else { //확률이 1미만인 transition 들
@@ -78,8 +86,9 @@ public class RunGeneration {
                         else{
                             runCode.addStatement(t.getTrigger() + "()");
                         }
-                        runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
-                        runCode.addStatement("break");
+                        if(!s.getTime().equals("1")) { // Time 1이 아니면.
+                            runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+                        }                        runCode.addStatement("break");
                         temp += Double.parseDouble(t.getProbability());
                         runCode.endControlFlow();
                     }
@@ -93,15 +102,18 @@ public class RunGeneration {
                         else{
                             runCode.addStatement(t.getTrigger() + "()");
                         }
-                        runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
-                        runCode.addStatement("break");
+                        if(!s.getTime().equals("1")) { // Time 1이 아니면.
+                            runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+                        }                        runCode.addStatement("break");
                         temp += Double.parseDouble(t.getProbability());
                         runCode.endControlFlow();
                     }
                 }
 
             }
-            runCode.endControlFlow();
+            if(!s.getTime().equals("1")) { // Time 1이 아니면.
+                runCode.endControlFlow();
+            }
             runCode.endControlFlow();
         }
 
@@ -120,7 +132,7 @@ public class RunGeneration {
             }
         }
         for (Synchronization syn : callee) {
-            call += getChannelName(syn.getTrigger()) + "((" + syn.getName() + ")environmentList.get(String.format("
+            call += getChannelName(syn.getTrigger()) + "((" + syn.getName() + ")passiveEnvironmentModelList.get(String.format("
                     +"\"" + syn.getName() + "(" + getChannelParameter(syn.getTrigger()) + ")))";
         }
         return call;

@@ -3,8 +3,9 @@ package CodeGeneration;
 import CodeGeneration.XMLParseDataType.State;
 import CodeGeneration.XMLParseDataType.Synchronization;
 import CodeGeneration.XMLParseDataType.Transition;
+import Model.AbstactClass.ActiveEnvironment;
 import Model.AbstactClass.CS;
-import Model.AbstactClass.Environment;
+import Model.AbstactClass.PassiveEnvironment;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
@@ -15,14 +16,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static CodeGeneration.CodeGenerationLogic.ActionGeneration.getAction;
+import static CodeGeneration.CodeGenerationLogic.ActionCodeGeneration.getAction;
 import static CodeGeneration.CodeGenerationLogic.AnnotationGeneration.getAnnotation;
 import static CodeGeneration.CodeGenerationLogic.BasicSkeletonGeneration.*;
 import static CodeGeneration.CodeGenerationLogic.LocalVariableGeneration.getLocalFieldSpec;
 import static CodeGeneration.CodeGenerationLogic.RunGeneration.getRun;
 import static CodeGeneration.CodeGenerationLogic.TimeVariableGeneration.getTimeFieldSpec;
 import static CodeGeneration.CodeGenerationLogic.TransitionGeneration.getTransition;
-import static CodeGeneration.Parser.Parser.*;
+import static CodeGeneration.Parser.BehaviorParser.*;
 
 public class CodeGenerator {
 
@@ -39,12 +40,14 @@ public class CodeGenerator {
         urlList.add("MoppingRobot.xml");
         urlList.add("SweepingRobot.xml");
         urlList.add("Tile.xml");
+//        urlList.add("Dust.xml");
 
 
         for(String url : urlList) {
             ArrayList<Transition> trans = getTransitionInformation(url);
             for(Transition t : trans) {
                 String curTrigger = t.getTrigger();
+                if (curTrigger.equals("")) continue;
                 if(curTrigger.charAt(curTrigger.length()-1) == '?'){ // Synchronization check
                     AllTransition.add(new Synchronization(url.substring(0, url.lastIndexOf(".")), t.getTrigger()));
                 }
@@ -54,7 +57,7 @@ public class CodeGenerator {
 
         /*print Synchronization classes */
 
-//        for(Synchronization s : AllTransition) {
+//        for(Synchronization s : AllTransition) {                    System.out.println("1");
 //            System.out.println(String.format("%s %s \n", s.getName(), s.getTrigger() ));
 //        }
 
@@ -87,18 +90,19 @@ public class CodeGenerator {
             }
             System.out.println("--------------------");
 
-
-
-            codeGeneration(url,type,actionCode, localVariables, States, Transitions, Parameters,AllTransition);
+            BehaviorCodeGeneration(url,type,actionCode, localVariables, States, Transitions, Parameters,AllTransition);
         }
 
     }
 
 
 
-    private static void codeGeneration(String url, String type, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
+    private static void BehaviorCodeGeneration(String url, String type, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
 
+        BehaviorGeneration(url, type, actionCode, localVariables, states, transitions, parameters, allTransition);
+    }
 
+    private static void BehaviorGeneration(String url, String type, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
         String className = url.substring(0,url.lastIndexOf(".")); //get state machine name
         String initialStateName = getInitialStateName(states); // get name of the initial state
         TypeSpec enumTypeSpec = enumGeneration(states); //enum generation
@@ -136,13 +140,15 @@ public class CodeGenerator {
             MethodSpec run = getRun(states,transitions,allTransition);
             builder.addMethod(run);
         }
-        else if (type.equals("EnvironmentCondition")) {
-            builder.superclass(Environment.class);
-
+        else if (type.equals("PassiveEnvironment")) {
+            builder.superclass(PassiveEnvironment.class);
+        }
+        else if (type.equals("ActiveEnvironment")) {
+            builder.superclass(ActiveEnvironment.class);
+            MethodSpec run = getRun(states,transitions,allTransition);
+            builder.addMethod(run);
         }
         builder.build();
-
-
 
 
         JavaFile javaFile = JavaFile.builder("Model.GeneratedCode.Behavior", builder.build())
@@ -153,8 +159,6 @@ public class CodeGenerator {
             System.out.println(e.getLocalizedMessage());
         }
     }
-
-
 
 
 }

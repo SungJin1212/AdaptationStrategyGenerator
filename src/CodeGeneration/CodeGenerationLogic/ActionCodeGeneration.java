@@ -7,7 +7,7 @@ import com.squareup.javapoet.MethodSpec;
 import javax.lang.model.element.Modifier;
 import java.util.ArrayList;
 
-public class ActionGeneration {
+public class ActionCodeGeneration {
 
     public static ArrayList<MethodSpec> getAction(ArrayList<Transition> transitions, String actionCode) {
 
