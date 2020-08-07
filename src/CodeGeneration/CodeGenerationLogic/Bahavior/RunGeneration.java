@@ -1,4 +1,4 @@
-package CodeGeneration.CodeGenerationLogic;
+package CodeGeneration.CodeGenerationLogic.Bahavior;
 
 import CodeGeneration.XMLParseDataType.State;
 import CodeGeneration.XMLParseDataType.Synchronization;
@@ -20,11 +20,14 @@ public class RunGeneration {
 
         for(State s : states) {
 
+            if(s.getAtomic().equals("1")) continue; // atomic 이면 continue
 
-            ArrayList<Transition> tempTransitions = new ArrayList<>(0);
+            ArrayList<Transition> tempTransitions = new ArrayList<>(0); // 한 state에서 나가는 transition들
             for(Transition t : transitions) {
                 if(s.getStateName().equals(t.getFrom())) {
-                    tempTransitions.add(t);
+                    if(getLastChar(t.getTrigger()) != '?') { //receive 아니면
+                        tempTransitions.add(t);
+                    }
                 }
             }
 
@@ -35,8 +38,11 @@ public class RunGeneration {
             if(!s.getTime().equals("1")) { // Time 1이 아니면.
                 runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
             }
-            if (tempTransitions.size() == 1) {
+            if (tempTransitions.size() == 1) { //나가는 Transition 의 갯수가 1개인 경우
                 Transition t = tempTransitions.get(0);
+                if(!t.getGuard().equals("")) {
+                    runCode.beginControlFlow("if($N)", t.getGuard());
+                }
                 if(!t.getProbability().equals("1")) {
                     runCode.beginControlFlow("if(Math.random() < $N)", t.getProbability());
                 }
@@ -53,8 +59,12 @@ public class RunGeneration {
                 if(!t.getProbability().equals("1")) {
                     runCode.endControlFlow();
                 }
+                if(!t.getGuard().equals("")) {
+                    runCode.endControlFlow();
+                }
             }
-            else if (tempTransitions.size() >= 2 && tempTransitions.get(0).getProbability().equals("1")) { //확률이 모두다 1 이지만 guard 로 precondition을 체크해야 하는 경우
+
+            else if (tempTransitions.size() >= 2 && tempTransitions.get(0).getProbability().equals("1")) { //확률이 모두다 1 이지만 guard 로 Precondition 들을 체크해야 하는 경우
                 for (Transition t : tempTransitions) {
                     runCode.beginControlFlow("if ($N)",t.getGuard());
                     if (t.getTrigger().contains("!")) {
@@ -74,10 +84,14 @@ public class RunGeneration {
             }
             else { //확률이 1미만인 transition 들
                 temp = 0;
+                double totalpro = 0;
+                for(Transition t: tempTransitions) {
+                    totalpro += Double.parseDouble(t.getProbability());
+                }
                 runCode.addStatement("double pro = Math.random()");
                 for(Transition t : tempTransitions) {
                     if(temp == 0) {
-                        runCode.beginControlFlow("if(pro < $N)", t.getProbability());
+                        runCode.beginControlFlow("if(pro < $N)",  String.valueOf(Double.parseDouble(t.getProbability())/totalpro));
                         if (t.getTrigger().contains("!")) {
                             String call = getSendCallStatement(allTransition, t);
                             runCode.addStatement(call);
@@ -88,12 +102,13 @@ public class RunGeneration {
                         }
                         if(!s.getTime().equals("1")) { // Time 1이 아니면.
                             runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
-                        }                        runCode.addStatement("break");
+                        }
+                        runCode.addStatement("break");
                         temp += Double.parseDouble(t.getProbability());
                         runCode.endControlFlow();
                     }
                     else{
-                        runCode.beginControlFlow("else if(pro > $N && pro <= $N)", String.valueOf(temp), String.valueOf(temp + Double.parseDouble(t.getProbability())));
+                        runCode.beginControlFlow("else if(pro > $N && pro <= $N)", String.valueOf(temp/totalpro), String.valueOf((temp + Double.parseDouble(t.getProbability()))/totalpro));
                         if (t.getTrigger().contains("!")) {
                             String call = getSendCallStatement(allTransition, t);
                             runCode.addStatement(call);
@@ -104,7 +119,8 @@ public class RunGeneration {
                         }
                         if(!s.getTime().equals("1")) { // Time 1이 아니면.
                             runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
-                        }                        runCode.addStatement("break");
+                        }
+                        runCode.addStatement("break");
                         temp += Double.parseDouble(t.getProbability());
                         runCode.endControlFlow();
                     }
@@ -132,7 +148,7 @@ public class RunGeneration {
             }
         }
         for (Synchronization syn : callee) {
-            call += getChannelName(syn.getTrigger()) + "((" + syn.getName() + ")passiveEnvironmentModelList.get(String.format("
+            call += getChannelName(syn.getTrigger()) + "((" + syn.getName() + ")EnvironmentModelList.get(String.format("
                     +"\"" + syn.getName() + "(" + getChannelParameter(syn.getTrigger()) + ")))";
         }
         return call;
@@ -143,6 +159,7 @@ public class RunGeneration {
         System.out.println(trigger);
         String parameters = "";
         String format = "";
+        String ret = "";
 
         for(int i =0; i<trigger.length(); i++) {
             char c = trigger.charAt(i);
@@ -154,14 +171,20 @@ public class RunGeneration {
                 parameters += ",";
             }
         }
-
-        String ret = format.substring(0,format.length()-1) + ")" + "\"" + "," + parameters.substring(0,parameters.length()-1);
-
+        if (trigger.contains("[")) {
+            ret = format.substring(0, format.length() - 1) + ")" + "\"" + "," + parameters.substring(0, parameters.length() - 1);
+        }
         return ret;
     }
 
     private static String getChannelName(String trigger) {
-        int idx = trigger.indexOf("[");
+        int idx;
+        if(trigger.contains("[")) {
+             idx = trigger.indexOf("[");
+        }
+        else {
+            idx = trigger.indexOf("?");
+        }
 
         return trigger.substring(0,idx);
     }
@@ -175,5 +198,10 @@ public class RunGeneration {
             return false;
         }
     }
+
+    private static char getLastChar(String str) {
+        return str.charAt(str.length()-1);
+    }
+
 
 }

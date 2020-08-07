@@ -1,6 +1,7 @@
-package Simulator;
+package ExpectedOutput.MOP.temp.Simulator;
 
-import Model.AbstactClass.SoS;
+
+import Model.AbstactClass.Behavior.SoS;
 
 public class Simulator {
 
@@ -11,7 +12,7 @@ public class Simulator {
     }
 
 
-    public String StartSimulation() {
+    public double[] StartSimulation() {
 
         for(int t=1; t<=50; t++) {
             sos.run();

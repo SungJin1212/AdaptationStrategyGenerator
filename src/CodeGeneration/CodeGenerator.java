@@ -3,9 +3,8 @@ package CodeGeneration;
 import CodeGeneration.XMLParseDataType.State;
 import CodeGeneration.XMLParseDataType.Synchronization;
 import CodeGeneration.XMLParseDataType.Transition;
-import Model.AbstactClass.ActiveEnvironment;
-import Model.AbstactClass.CS;
-import Model.AbstactClass.PassiveEnvironment;
+import Model.AbstactClass.Behavior.Environment;
+import Model.AbstactClass.Behavior.CS;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
@@ -16,13 +15,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static CodeGeneration.CodeGenerationLogic.ActionCodeGeneration.getAction;
-import static CodeGeneration.CodeGenerationLogic.AnnotationGeneration.getAnnotation;
-import static CodeGeneration.CodeGenerationLogic.BasicSkeletonGeneration.*;
-import static CodeGeneration.CodeGenerationLogic.LocalVariableGeneration.getLocalFieldSpec;
-import static CodeGeneration.CodeGenerationLogic.RunGeneration.getRun;
-import static CodeGeneration.CodeGenerationLogic.TimeVariableGeneration.getTimeFieldSpec;
-import static CodeGeneration.CodeGenerationLogic.TransitionGeneration.getTransition;
+import static CodeGeneration.CodeGenerationLogic.Bahavior.ActionCodeGeneration.getAction;
+import static CodeGeneration.CodeGenerationLogic.Bahavior.AnnotationGeneration.getAnnotation;
+import static CodeGeneration.CodeGenerationLogic.Bahavior.BasicSkeletonGeneration.*;
+import static CodeGeneration.CodeGenerationLogic.Bahavior.LocalVariableGeneration.getLocalFieldSpec;
+import static CodeGeneration.CodeGenerationLogic.Bahavior.RunGeneration.getRun;
+import static CodeGeneration.CodeGenerationLogic.Bahavior.TimeVariableGeneration.getTimeFieldSpec;
+import static CodeGeneration.CodeGenerationLogic.Bahavior.TransitionGeneration.getTransition;
 import static CodeGeneration.Parser.BehaviorParser.*;
 
 public class CodeGenerator {
@@ -36,23 +35,26 @@ public class CodeGenerator {
 //        urlList.add("Human.xml");
 //        urlList.add("bulb.xml");
 //        urlList.add("MoppingRobot_LocalVariableExtended.xml");
-
-        urlList.add("MoppingRobot.xml");
-        urlList.add("SweepingRobot.xml");
-        urlList.add("Tile.xml");
-//        urlList.add("Dust.xml");
+//
+//        urlList.add("MoppingRobot.xml");
+//        urlList.add("SweepingRobot.xml");
+//        urlList.add("Tile.xml");
+        urlList.add("Dust.xml");
+//        urlList.add("DustController.xml");
 
 
         for(String url : urlList) {
             ArrayList<Transition> trans = getTransitionInformation(url);
             for(Transition t : trans) {
-                String curTrigger = t.getTrigger();
-                if (curTrigger.equals("")) continue;
-                if(curTrigger.charAt(curTrigger.length()-1) == '?'){ // Synchronization check
-                    AllTransition.add(new Synchronization(url.substring(0, url.lastIndexOf(".")), t.getTrigger()));
+                String[] transitions = t.getTrigger().split(",");
+                for(String eachTrigger : transitions) {
+                    if (eachTrigger.equals("")) continue;
+                    if (eachTrigger.charAt(eachTrigger.length() - 1) == '?' ) { // Synchronization check
+                        AllTransition.add(new Synchronization(url.substring(0, url.lastIndexOf(".")), eachTrigger));
+                    }
                 }
             }
-        } //모든 model에서 "?" 있는 채널 검사 후 "AllTransition"에 추가
+        } //모든 model에서 "?" 있는 채널 검사 후 "AllTransition"에 추가 ("Tile", Mop[x][y]?, "Tile", dustUpdate1?, "Tile", dustUpdate3?, "Tile", Sweep[x][y]?, "Tile", dustUpdate2?)
 
 
         /*print Synchronization classes */
@@ -117,7 +119,7 @@ public class CodeGenerator {
         ArrayList<FieldSpec> GuardsParametersFields = getFieldSpec(transitions,parameters); //get field variable
         ArrayList<FieldSpec> LocalVariablesFields = getLocalFieldSpec(localVariables);
         ArrayList<FieldSpec> TimeVariablesFields = getTimeFieldSpec(states);
-        ArrayList<MethodSpec> trans = getTransition(transitions,allTransition); // get transition code
+        ArrayList<MethodSpec> trans = getTransition(transitions,allTransition,states); // get transition code
         ArrayList<MethodSpec> actions = getAction(transitions,actionCode);
 
         //MethodSpec.Builder builder = MethodSpec.methodBuilder(curTriggerName).addModifiers(Modifier.PUBLIC).returns(boolean.class);
@@ -137,14 +139,12 @@ public class CodeGenerator {
 
         if(type.equals("CS")) {
             builder.superclass(CS.class);
+            builder.addSuperinterface(Cloneable.class);
             MethodSpec run = getRun(states,transitions,allTransition);
             builder.addMethod(run);
         }
-        else if (type.equals("PassiveEnvironment")) {
-            builder.superclass(PassiveEnvironment.class);
-        }
-        else if (type.equals("ActiveEnvironment")) {
-            builder.superclass(ActiveEnvironment.class);
+        else if (type.equals("Environment")) {
+            builder.superclass(Environment.class);
             MethodSpec run = getRun(states,transitions,allTransition);
             builder.addMethod(run);
         }

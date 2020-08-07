@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ADOXML SYSTEM "adoxml31.dtd">
-<ADOXML version="3.1" date="03.08.2020" time="16:23" database="adoxxdb" username="sjmodeler" adoversion="Version 5.1">
+<ADOXML version="3.1" date="07.08.2020" time="13:14" database="adoxxdb" username="sjmodeler" adoversion="Version 5.1">
 <MODELS>
 <MODEL id="mod.82833" name="Dust" version="" modeltype="SJ" libtype="bp" applib="ADOxx 1.5 Dynamic Experimentation Library-SJ">
 <MODELATTRIBUTES>
 <ATTRIBUTE name="Version number" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Author" type="STRING">sjmodeler</ATTRIBUTE>
 <ATTRIBUTE name="Creation date" type="STRING">03.08.2020, 16:06</ATTRIBUTE>
-<ATTRIBUTE name="Date last changed" type="STRING">03.08.2020, 16:10:05</ATTRIBUTE>
+<ATTRIBUTE name="Date last changed" type="STRING">07.08.2020, 12:47:47</ATTRIBUTE>
 <ATTRIBUTE name="Last user" type="STRING">sjmodeler</ATTRIBUTE>
 <ATTRIBUTE name="Keywords" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Comment" type="STRING"></ATTRIBUTE>
@@ -21,7 +21,7 @@
 <ATTRIBUTE name="Grid" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Zoom" type="INTEGER">100</ATTRIBUTE>
 <ATTRIBUTE name="Viewable area" type="STRING">VIEW representation:graphic
-GRAPHIC x:-16 y:-16 w:817 h:736 scale:1
+GRAPHIC x:-16 y:-16 w:1537 h:1053 scale:1
 TABLE
 </ATTRIBUTE>
 <ATTRIBUTE name="Current mode" type="STRING"></ATTRIBUTE>
@@ -30,12 +30,12 @@ TABLE
 <ATTRIBUTE name="Current page layout" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Connector marks" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Type" type="STRING">SJ</ATTRIBUTE>
-<ATTRIBUTE name="Change counter" type="INTEGER">119</ATTRIBUTE>
+<ATTRIBUTE name="Change counter" type="INTEGER">134</ATTRIBUTE>
 <ATTRIBUTE name="Font size" type="INTEGER">0</ATTRIBUTE>
 <ATTRIBUTE name="Context of version" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Position" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="__GfxThumb__" type="LONGSTRING">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</ATTRIBUTE>
+<ATTRIBUTE name="__GfxThumb__" type="LONGSTRING">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</ATTRIBUTE>
 </MODELATTRIBUTES>
 <INSTANCE id="obj.82835" class="State" name="DustLevel1">
 <ATTRIBUTE name="Position" type="STRING">NODE x:9cm y:3cm index:1</ATTRIBUTE>
@@ -45,7 +45,8 @@ TABLE
 <ATTRIBUTE name="Location name" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="InitialState" type="STRING">1</ATTRIBUTE>
-<ATTRIBUTE name="Time" type="STRING">5</ATTRIBUTE>
+<ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
 </INSTANCE>
 <INSTANCE id="obj.82838" class="State" name="DustLevel2">
 <ATTRIBUTE name="Position" type="STRING">NODE x:14cm y:9cm index:2</ATTRIBUTE>
@@ -55,7 +56,8 @@ TABLE
 <ATTRIBUTE name="Location name" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
-<ATTRIBUTE name="Time" type="STRING">5</ATTRIBUTE>
+<ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
 </INSTANCE>
 <INSTANCE id="obj.82841" class="State" name="DustLevel3">
 <ATTRIBUTE name="Position" type="STRING">NODE x:4cm y:9cm index:3</ATTRIBUTE>
@@ -65,39 +67,40 @@ TABLE
 <ATTRIBUTE name="Location name" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
-<ATTRIBUTE name="Time" type="STRING">5</ATTRIBUTE>
+<ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
 </INSTANCE>
-<INSTANCE id="obj.82850" class="Configuration" name="Configuration-82850">
-<ATTRIBUTE name="Position" type="STRING">NODE x:16.5cm y:2cm index:10</ATTRIBUTE>
+<INSTANCE id="obj.85210" class="Configuration" name="Configuration-85210">
+<ATTRIBUTE name="Position" type="STRING">NODE x:18cm y:3.5cm index:10</ATTRIBUTE>
 <ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Parameters" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="LocalVariables" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Type" type="STRING">ActiveEnvironment</ATTRIBUTE>
+<ATTRIBUTE name="Type" type="STRING">Environment</ATTRIBUTE>
 </INSTANCE>
 <CONNECTOR id="con.82844" class="Transition">
 <FROM instance="DustLevel1" class="State"></FROM>
 <TO instance="DustLevel3" class="State"></TO>
 <ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:4</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">Update1to3</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">updatelevel3</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">oneTothree</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">0.5</ATTRIBUTE>
 </CONNECTOR>
 <CONNECTOR id="con.82845" class="Transition">
 <FROM instance="DustLevel1" class="State"></FROM>
 <TO instance="DustLevel2" class="State"></TO>
-<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:5 MIDDLE x:10.05cm y:4.26cm</ATTRIBUTE>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:5 MIDDLE x:10.57cm y:4.88cm</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">Update1to2</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">updatelevel2</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">oneTotwo</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">0.5</ATTRIBUTE>
 </CONNECTOR>
 <CONNECTOR id="con.82846" class="Transition">
 <FROM instance="DustLevel3" class="State"></FROM>
 <TO instance="DustLevel2" class="State"></TO>
-<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:6 MIDDLE x:8.77cm y:9cm</ATTRIBUTE>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:6 MIDDLE x:8.24cm y:9cm</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">Update3to2</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">updatelevel2</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">threeTotwo</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">0.5</ATTRIBUTE>
 </CONNECTOR>
@@ -106,7 +109,7 @@ TABLE
 <TO instance="DustLevel1" class="State"></TO>
 <ATTRIBUTE name="Positions" type="STRING">EDGE 1 x1:4cm y1:3cm index:7 MIDDLE x:4cm y:3.63cm</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">Update3to1</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">updatelevel1</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">threeToone</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">0.5</ATTRIBUTE>
 </CONNECTOR>
@@ -115,16 +118,16 @@ TABLE
 <TO instance="DustLevel1" class="State"></TO>
 <ATTRIBUTE name="Positions" type="STRING">EDGE 1 x1:14cm y1:3cm index:8</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">Update2to1</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">updatelevel1</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">twoToone</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">0.5</ATTRIBUTE>
 </CONNECTOR>
 <CONNECTOR id="con.82849" class="Transition">
 <FROM instance="DustLevel2" class="State"></FROM>
 <TO instance="DustLevel3" class="State"></TO>
-<ATTRIBUTE name="Positions" type="STRING">EDGE 1 x1:9cm y1:13cm index:9 MIDDLE x:9cm y:13cm</ATTRIBUTE>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 1 x1:9cm y1:11.5cm index:9 MIDDLE x:9cm y:11.5cm</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">Update2to3</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">updatelevel3</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">twoTothree</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">0.5</ATTRIBUTE>
 </CONNECTOR>

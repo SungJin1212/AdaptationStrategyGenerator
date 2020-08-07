@@ -1,4 +1,4 @@
-package CodeGeneration.CodeGenerationLogic;
+package CodeGeneration.CodeGenerationLogic.Bahavior;
 
 import CodeGeneration.XMLParseDataType.LocalVariable;
 import com.squareup.javapoet.FieldSpec;

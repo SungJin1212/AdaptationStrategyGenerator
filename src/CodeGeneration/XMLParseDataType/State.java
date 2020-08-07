@@ -4,6 +4,15 @@ public class State {
     private String initialState;
     private String stateName;
     private String time;
+    private String atomic;
+
+    public String getAtomic() {
+        return atomic;
+    }
+
+    public void setAtomic(String atomic) {
+        this.atomic = atomic;
+    }
 
     public String getTime() {
         return time;

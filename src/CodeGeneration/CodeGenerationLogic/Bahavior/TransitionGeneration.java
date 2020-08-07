@@ -1,5 +1,6 @@
-package CodeGeneration.CodeGenerationLogic;
+package CodeGeneration.CodeGenerationLogic.Bahavior;
 
+import CodeGeneration.XMLParseDataType.State;
 import CodeGeneration.XMLParseDataType.Synchronization;
 import CodeGeneration.XMLParseDataType.Transition;
 import com.squareup.javapoet.CodeBlock;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 public class TransitionGeneration {
 
-    public static ArrayList<MethodSpec> getTransition(ArrayList<Transition> transitions, Set<Synchronization> synchronizations) { //return transition code
+    public static ArrayList<MethodSpec> getTransition(ArrayList<Transition> transitions, Set<Synchronization> synchronizations, ArrayList<State> states) { //return transition code
         ArrayList<MethodSpec> results = new ArrayList<>();
         Set<String> dependentClass = new HashSet<>();
         Set<String> normalTriggerNames = new HashSet<>();
@@ -34,10 +35,10 @@ public class TransitionGeneration {
         }
 
         for(String eachTrigger : normalTriggerNames) {
-            results.add(getTransitionCode(transitions,eachTrigger));
+            results.add(getTransitionCode(transitions,eachTrigger,states));
         }
         for(String eachTrigger : receiveTriggerNames) {
-            results.add(getTransitionCode(transitions,eachTrigger));
+            results.add(getTransitionCode(transitions,eachTrigger,states));
         }
         for(String eachTrigger : sendTriggerNames) {
             for(Synchronization synchronization : synchronizations) {
@@ -45,14 +46,14 @@ public class TransitionGeneration {
                     dependentClass.add(synchronization.getName());
                 }
             }
-            results.add(getSendTransitionCode(transitions,eachTrigger,dependentClass));
+            results.add(getSendTransitionCode(transitions,eachTrigger,dependentClass,states));
             dependentClass.clear();
         }
 
         return results;
     }
 
-    private static MethodSpec getSendTransitionCode(ArrayList<Transition> transitions, String curTriggerName, Set<String> dependentClass) {
+    private static MethodSpec getSendTransitionCode(ArrayList<Transition> transitions, String curTriggerName, Set<String> dependentClass, ArrayList<State> states) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(curTriggerName).addModifiers(Modifier.PUBLIC).returns(boolean.class);
 
 
@@ -60,7 +61,7 @@ public class TransitionGeneration {
             builder.addParameter(TypeVariableName.get(dependentClassName), getFirstChar(dependentClassName)).build();
         }
 
-        CodeBlock transitionCode = getSendTransitionLogicCode(transitions,curTriggerName,dependentClass);
+        CodeBlock transitionCode = getSendTransitionLogicCode(transitions,curTriggerName,dependentClass,states);
 
         builder.addCode(transitionCode);
 
@@ -68,7 +69,7 @@ public class TransitionGeneration {
 
     }
 
-    private static CodeBlock getSendTransitionLogicCode(ArrayList<Transition> transitions, String curTriggerName, Set<String> dependentClass) {
+    private static CodeBlock getSendTransitionLogicCode(ArrayList<Transition> transitions, String curTriggerName, Set<String> dependentClass, ArrayList<State> states) {
         boolean isGuard;
         boolean isProbability;
 
@@ -80,26 +81,8 @@ public class TransitionGeneration {
 
         for(Transition t : transitions) {
             if (getMethodName(t.getTrigger()).equals(curTriggerName)) {
-                isGuard = false;
-                isProbability = false;
-
-                if (!t.getGuard().equals("")) {
-                    isGuard = true;
-                }
 
                 builder.beginControlFlow("case " + t.getFrom() + ":");
-
-                if (!t.getProbability().equals("1")) {
-                    isProbability = true;
-                }
-
-                if (isGuard) {
-                    builder.beginControlFlow("if(" + t.getGuard() + ")");
-                }
-
-                if (isProbability) {
-                    builder.beginControlFlow("if(Math.random() < " + t.getProbability() + ")");
-                }
 
                 for (String dependentClassName : dependentClass) {
                     builder.addStatement(getFirstChar(dependentClassName) + "." + getMethodName(t.getTrigger()) + "()");
@@ -112,12 +95,23 @@ public class TransitionGeneration {
                     }
                 }
 
-
                 builder.addStatement("setStatus(Status." + t.getTo() + ")");
+
+                for(State s : states) {
+                    if (s.getStateName().equals(t.getTo())) { // 도착하는 state를 찾아서
+                        if(s.getAtomic().equals("1")) {
+                            for(Transition tran : transitions) {
+                                if(tran.getFrom().equals(s.getStateName())) {
+                                    builder.addStatement("$N()", tran.getTrigger());
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
                 builder.addStatement("wasEventProcessed = true");
                 builder.addStatement("break");
-                if (isProbability) builder.endControlFlow();
-                if (isGuard) builder.endControlFlow();
                 builder.endControlFlow();
             }
         }
@@ -129,10 +123,10 @@ public class TransitionGeneration {
         return builder.build();
     }
 
-    private static MethodSpec getTransitionCode(ArrayList<Transition> transitions, String curTriggerName) {
+    private static MethodSpec getTransitionCode(ArrayList<Transition> transitions, String curTriggerName, ArrayList<State> states) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(curTriggerName).addModifiers(Modifier.PUBLIC).returns(boolean.class);
 
-        CodeBlock transitionCode = getTransitionLogicCode(transitions,curTriggerName);
+        CodeBlock transitionCode = getTransitionLogicCode(transitions,curTriggerName,states);
 
         builder.addCode(transitionCode);
 
@@ -140,7 +134,7 @@ public class TransitionGeneration {
 
     }
 
-    private static CodeBlock getTransitionLogicCode(ArrayList<Transition> transitions, String curTriggerName) {
+    private static CodeBlock getTransitionLogicCode(ArrayList<Transition> transitions, String curTriggerName, ArrayList<State> states) {
         boolean isGuard;
         boolean isProbability;
 
@@ -152,21 +146,12 @@ public class TransitionGeneration {
 
         for(Transition t : transitions) {
             if (getMethodName(t.getTrigger()).equals(curTriggerName)) {
-                isGuard = false;
-                
-                if (!t.getGuard().equals("")) {
-                    isGuard = true;
-                }
+
 
                 builder.beginControlFlow("case " + t.getFrom() + ":");
 
 
-                if (isGuard) {
-                    builder.beginControlFlow("if(" + t.getGuard() + ")");
-                }
-
-
-                if (!t.getAction().equals("NoAction")) {
+                if (!t.getAction().equals("NoAction")) { /*Action code generation*/
                     String[] actionList = t.getAction().split(",");
                     for (String s : actionList) {
                         builder.addStatement(s + "()");
@@ -174,9 +159,24 @@ public class TransitionGeneration {
                 }
 
                 builder.addStatement("setStatus(Status." + t.getTo() + ")");
+
+                for(State s : states) {
+                    if (s.getStateName().equals(t.getTo())) { // 도착하는 state를 찾아서
+                        if(s.getAtomic().equals("1")) {
+                            for(Transition tran : transitions) {
+                                if(tran.getFrom().equals(s.getStateName())) {
+                                    builder.addStatement("$N()", tran.getTrigger());
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+
                 builder.addStatement("wasEventProcessed = true");
                 builder.addStatement("break");
-                if (isGuard) builder.endControlFlow();
+//                if (isGuard) builder.endControlFlow();
                 builder.endControlFlow();
             }
         }

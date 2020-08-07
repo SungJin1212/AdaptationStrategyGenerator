@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ADOXML SYSTEM "adoxml31.dtd">
-<ADOXML version="3.1" date="03.08.2020" time="15:06" database="adoxxdb" username="sjmodeler" adoversion="Version 5.1">
+<ADOXML version="3.1" date="07.08.2020" time="12:48" database="adoxxdb" username="sjmodeler" adoversion="Version 5.1">
 <MODELS>
 <MODEL id="mod.72850" name="MoppingRobot" version="" modeltype="SJ" libtype="bp" applib="ADOxx 1.5 Dynamic Experimentation Library-SJ">
 <MODELATTRIBUTES>
 <ATTRIBUTE name="Version number" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Author" type="STRING">sjmodeler</ATTRIBUTE>
 <ATTRIBUTE name="Creation date" type="STRING">20.07.2020, 15:08</ATTRIBUTE>
-<ATTRIBUTE name="Date last changed" type="STRING">03.08.2020, 14:41:05</ATTRIBUTE>
+<ATTRIBUTE name="Date last changed" type="STRING">07.08.2020, 12:48:11</ATTRIBUTE>
 <ATTRIBUTE name="Last user" type="STRING">sjmodeler</ATTRIBUTE>
 <ATTRIBUTE name="Keywords" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Comment" type="STRING"></ATTRIBUTE>
@@ -21,7 +21,7 @@
 <ATTRIBUTE name="Grid" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Zoom" type="INTEGER">100</ATTRIBUTE>
 <ATTRIBUTE name="Viewable area" type="STRING">VIEW representation:graphic
-GRAPHIC x:-16 y:-16 w:1537 h:981 scale:1
+GRAPHIC x:-16 y:15 w:1537 h:1053 scale:1
 TABLE
 </ATTRIBUTE>
 <ATTRIBUTE name="Current mode" type="STRING"></ATTRIBUTE>
@@ -30,12 +30,12 @@ TABLE
 <ATTRIBUTE name="Current page layout" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Connector marks" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Type" type="STRING">SJ</ATTRIBUTE>
-<ATTRIBUTE name="Change counter" type="INTEGER">390</ATTRIBUTE>
+<ATTRIBUTE name="Change counter" type="INTEGER">445</ATTRIBUTE>
 <ATTRIBUTE name="Font size" type="INTEGER">0</ATTRIBUTE>
 <ATTRIBUTE name="Context of version" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Position" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="__GfxThumb__" type="LONGSTRING">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</ATTRIBUTE>
+<ATTRIBUTE name="__GfxThumb__" type="LONGSTRING">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</ATTRIBUTE>
 </MODELATTRIBUTES>
 <INSTANCE id="obj.72852" class="State" name="Dispatch">
 <ATTRIBUTE name="Position" type="STRING">NODE x:4.5cm y:11cm index:1</ATTRIBUTE>
@@ -46,6 +46,7 @@ TABLE
 <ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="InitialState" type="STRING">1</ATTRIBUTE>
 <ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
 </INSTANCE>
 <INSTANCE id="obj.72855" class="State" name="Mopping">
 <ATTRIBUTE name="Position" type="STRING">NODE x:16cm y:11cm index:2</ATTRIBUTE>
@@ -56,6 +57,7 @@ TABLE
 <ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
 <ATTRIBUTE name="Time" type="STRING">2</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
 </INSTANCE>
 <INSTANCE id="obj.72858" class="State" name="Checking">
 <ATTRIBUTE name="Position" type="STRING">NODE x:10.5cm y:11cm index:3</ATTRIBUTE>
@@ -66,16 +68,17 @@ TABLE
 <ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
 <ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
 </INSTANCE>
 <INSTANCE id="obj.77400" class="Configuration" name="Configuration-77400">
-<ATTRIBUTE name="Position" type="STRING">NODE x:8cm y:2cm index:9</ATTRIBUTE>
+<ATTRIBUTE name="Position" type="STRING">NODE x:7cm y:5.5cm index:6</ATTRIBUTE>
 <ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Parameters" type="STRING">cost,performance</ATTRIBUTE>
 <ATTRIBUTE name="LocalVariables" type="STRING">int x,y</ATTRIBUTE>
 <ATTRIBUTE name="Type" type="STRING">CS</ATTRIBUTE>
 </INSTANCE>
 <INSTANCE id="obj.82803" class="associationState" name="associationState-82803">
-<ATTRIBUTE name="Position" type="STRING">NODE x:10.5cm y:5cm index:10</ATTRIBUTE>
+<ATTRIBUTE name="Position" type="STRING">NODE x:10.5cm y:5cm index:7</ATTRIBUTE>
 <ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="bname" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="barea" type="INTEGER">0</ATTRIBUTE>
@@ -83,13 +86,14 @@ TABLE
 <ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
 <ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
 </INSTANCE>
 <CONNECTOR id="con.72861" class="Transition">
 <FROM instance="Dispatch" class="State"></FROM>
 <TO instance="Checking" class="State"></TO>
 <ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:4 MIDDLE x:5.35cm y:11cm</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">initPosition,check</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">initPosition,checkCanMopping</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">initPositionandCheck</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">1</ATTRIBUTE>
 </CONNECTOR>
@@ -98,32 +102,32 @@ TABLE
 <TO instance="Mopping" class="State"></TO>
 <ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:5 MIDDLE x:12.29cm y:11cm</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING">canMopping == true</ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">mopping</ATTRIBUTE>
-<ATTRIBUTE name="Trigger" type="STRING">doMopping</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">tryMopping</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">1</ATTRIBUTE>
 </CONNECTOR>
 <CONNECTOR id="con.82806" class="Transition">
 <FROM instance="Checking" class="State"></FROM>
 <TO instance="associationState-82803" class="associationState"></TO>
-<ATTRIBUTE name="Positions" type="STRING">EDGE 2 x1:14.5cm y1:7cm x2:14.5cm y2:5cm index:11</ATTRIBUTE>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 2 x1:14.5cm y1:7cm x2:14.5cm y2:5cm index:8</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING">canMopping == false</ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">move</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">move,checkCanMopping</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">doMove</ATTRIBUTE>
 <ATTRIBUTE name="Probability" type="STRING">1</ATTRIBUTE>
 </CONNECTOR>
 <CONNECTOR id="con.82808" class="Transition">
 <FROM instance="Mopping" class="State"></FROM>
 <TO instance="Checking" class="State"></TO>
-<ATTRIBUTE name="Positions" type="STRING">EDGE 2 x1:16cm y1:15.5cm x2:10.5cm y2:15.5cm index:13 MIDDLE x:12.93cm y:15.5cm</ATTRIBUTE>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 2 x1:16cm y1:15.5cm x2:10.5cm y2:15.5cm index:9 MIDDLE x:12.93cm y:15.5cm</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
-<ATTRIBUTE name="Action" type="STRING">checkCanMopping</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">mopping,checkCanMopping</ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING">Mop[x][y]!</ATTRIBUTE>
-<ATTRIBUTE name="Probability" type="STRING">performance/100.0</ATTRIBUTE>
+<ATTRIBUTE name="Probability" type="STRING"></ATTRIBUTE>
 </CONNECTOR>
 <CONNECTOR id="con.82830" class="Transition">
 <FROM instance="associationState-82803" class="associationState"></FROM>
 <TO instance="Checking" class="State"></TO>
-<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:14</ATTRIBUTE>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:10</ATTRIBUTE>
 <ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Action" type="STRING"></ATTRIBUTE>
 <ATTRIBUTE name="Trigger" type="STRING"></ATTRIBUTE>

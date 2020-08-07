@@ -167,6 +167,7 @@ public class BehaviorParser {
                     s.setStateName(nList.item(0).getParentNode().getAttributes().getNamedItem("name").getNodeValue());
                     s.setInitialState( nList.item(6).getTextContent()); // Initial State
                     s.setTime(nList.item(7).getTextContent()); // Time
+                    s.setAtomic(nList.item(8).getTextContent()); // Atomic
                     StateList.add(s);
                 }
             }

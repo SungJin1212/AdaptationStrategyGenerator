@@ -1,11 +1,11 @@
-package CodeGeneration.CodeGenerationLogic;
+package CodeGeneration.CodeGenerationLogic.Bahavior;
 
 import CodeGeneration.XMLParseDataType.Transition;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Modifier;
-import java.util.ArrayList;
+import java.util.*;
 
 public class ActionCodeGeneration {
 
@@ -13,14 +13,28 @@ public class ActionCodeGeneration {
 
         ArrayList<MethodSpec> actions = new ArrayList<>();
 
-        for (Transition t : transitions) {
-            if(!t.getAction().equals("NoAction")) {
-                String[] actionList= t.getAction().split(",");
-                for(String actionName : actionList) {
-                    actions.add(getEachAction(actionName,actionCode));
+        HashSet<String> names = new HashSet<>(0);
+
+        for(Transition t : transitions) {
+            String[] actionList= t.getAction().split(",");
+            for(String s : actionList) {
+                if(!s.equals("NoAction")) {
+                    names.add(s);
                 }
             }
         }
+        for(String s : names) {
+            actions.add(getEachAction(s,actionCode));
+        }
+//
+//        for (Transition t : transitions) {
+//            if(!t.getAction().equals("NoAction")) {
+//                String[] actionList= t.getAction().split(",");
+//                for(String actionName : actionList) {
+//                    actions.add(getEachAction(actionName,actionCode));
+//                }
+//            }
+//        }
         return actions;
     }
 
