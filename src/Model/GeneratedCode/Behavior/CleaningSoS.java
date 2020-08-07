@@ -3,6 +3,7 @@ package Model.GeneratedCode.Behavior;
 
 import Model.AbstactClass.Behavior.CS;
 import Model.AbstactClass.Behavior.SoS;
+import Model.AbstactClass.Rule.Strategy;
 import Model.GeneratedCode.Rule.EnvironmentCondition;
 import Model.GeneratedCode.Rule.cleaningSoSConfiguration;
 import Model.GeneratedCode.Tactics.*;
@@ -15,17 +16,21 @@ public class CleaningSoS extends SoS {
     public static int MopDust = 100;
 
 
-    public static int MapSize = 200;
+    public static int MapSize = 10;
     public static int dustunit;
     public static int[][] tileMap = new int[MapSize+1][MapSize+1];
 
+    public static double SoSGoal = 0;
     public static int totalcost = 0;
     public static int moppedTile = 0;
     public static int sweeppedTile = 0;
     public static int dustLevel;
 
+    private cleaningSoSConfiguration cleaningSoSConfiguration;
+
     public CleaningSoS(EnvironmentCondition environmentCondition, cleaningSoSConfiguration configuration) throws CloneNotSupportedException {
         super();
+        this.cleaningSoSConfiguration = configuration;
         dustunit = environmentCondition.getDustUnit();
         init(configuration);
     }
@@ -73,8 +78,6 @@ public class CleaningSoS extends SoS {
         tacticSpecificationList.put("RemoveSweepingRobotType2", new RemoveSweepingRobotType2());
     }
 
-
-
     private void AddCSs(cleaningSoSConfiguration configuration) throws CloneNotSupportedException {
 
         for(int i = 1; i<= configuration.getConfiguration().get("numSweepingRobotType1"); i++) {
@@ -105,8 +108,21 @@ public class CleaningSoS extends SoS {
     }
 
 
-    public double[] getFitness() {
+    public double[] getFitness(Strategy strategy) throws CloneNotSupportedException {
+        double latency = 0.0;
+        double cost = 0.0;
+        double[] tempValues = new double[2];
 
-        return new double[]{totalcost,moppedTile};
+        for(int t=1; t<=50; t++) {
+                tempValues[0] = 0.0;
+                tempValues[1] = 0.0;
+
+                super.run();
+                tempValues = super.runStrategy(this.cleaningSoSConfiguration, strategy);
+
+                cost += tempValues[0];
+                latency += tempValues[1];
+        }
+        return new double[]{SoSGoal, latency, cost};
     }
 }

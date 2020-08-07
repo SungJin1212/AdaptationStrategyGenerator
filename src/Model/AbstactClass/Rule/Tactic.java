@@ -1,17 +1,25 @@
 package Model.AbstactClass.Rule;
 
-abstract public class Tactic {
-    private int cost; //실행하는데 소요되는 cost
-    private int latency; //실행하는데 소요되는 시간
-    private String name;
+import Model.AbstactClass.Behavior.CS;
 
-    public Tactic(int cost, int latency, String name) {
+abstract public class Tactic implements Cloneable {
+    private double cost; //실행하는데 소요되는 cost
+    private double latency; //실행하는데 소요되는 시간
+    private String name;
+    private boolean isExecuted;
+
+    public Tactic(double cost, double latency, String name) {
         this.cost = cost;
         this.latency = latency;
         this.name = name;
+        isExecuted = false;
     }
 
-    protected int getLatency() {
+    public void setExecuted(boolean executed) {
+        isExecuted = executed;
+    }
+
+    protected double getLatency() {
         return latency;
     }
 
@@ -19,9 +27,18 @@ abstract public class Tactic {
         this.latency = latency;
     }
 
-    abstract public void run(Configuration configuration) throws CloneNotSupportedException;
+    abstract public double[] run(Configuration configuration) throws CloneNotSupportedException;
 
-    protected int getCost() {
+    protected double getCost() {
         return cost;
+    }
+
+    public boolean isExecuted() {
+        return isExecuted;
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        Tactic tactic = (Tactic)super.clone();
+        return tactic;
     }
 }

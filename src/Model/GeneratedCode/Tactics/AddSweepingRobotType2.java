@@ -6,10 +6,9 @@ import Model.AbstactClass.Rule.Tactic;
 
 import static Model.AbstactClass.Behavior.SoS.csModelList;
 import static Model.AbstactClass.Behavior.SoS.csSpecificationList;
-import static Model.GeneratedCode.Behavior.CleaningSoS.totalcost;
 
-public class AddSweepingRobotType2 extends Tactic {
-    private int remainTime = getLatency();
+public class AddSweepingRobotType2 extends Tactic implements Cloneable {
+    private double remainTime = getLatency();
 
     public AddSweepingRobotType2() {
 
@@ -17,14 +16,18 @@ public class AddSweepingRobotType2 extends Tactic {
     }
 
     @Override
-    public void run(Configuration configuration) throws CloneNotSupportedException {
+    public double[] run(Configuration configuration) throws CloneNotSupportedException {
+        double[] ret = new double[2];
+
         if(--remainTime == 0) {
-            remainTime = getLatency(); // 시간 초기화
-            totalcost += getCost(); // cost update
+            ret[0] = getCost();
+            ret[1] = getLatency();
             int currentSweepingRobotType2 = configuration.getConfiguration().get("numSweepingRobotType2");
             csModelList.put(String.format("SweepingRobotType2_%s",currentSweepingRobotType2 + 1), (CS) csSpecificationList.get("SweepingRobotType2").clone());
             configuration.getConfiguration().put("numSweepingRobotType2", configuration.getConfiguration().get("numSweepingRobotType2") + 1);
+            setExecuted(true);
         }
+        return ret;
     }
 
 }

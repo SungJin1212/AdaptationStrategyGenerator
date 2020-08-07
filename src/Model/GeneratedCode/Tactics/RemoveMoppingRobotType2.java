@@ -6,8 +6,8 @@ import Model.GeneratedCode.Behavior.CleaningSoS;
 
 import static Model.AbstactClass.Behavior.SoS.csModelList;
 
-public class RemoveMoppingRobotType2 extends Tactic {
-    private int remainTime = getLatency();
+public class RemoveMoppingRobotType2 extends Tactic implements Cloneable {
+    private double remainTime = getLatency();
 
     public RemoveMoppingRobotType2() {
 
@@ -15,13 +15,18 @@ public class RemoveMoppingRobotType2 extends Tactic {
     }
 
     @Override
-    public void run(Configuration configuration) {
+    public double[] run(Configuration configuration) throws CloneNotSupportedException {
+        double[] ret = new double[2];
+
         if(--remainTime == 0) {
-            remainTime = getLatency(); // 시간 초기화
-            CleaningSoS.totalcost += getCost(); // cost update
+            ret[0] = getCost();
+            ret[1] = getLatency();
             int currentMoppingRobotType2 = configuration.getConfiguration().get("numMoppingRobotType2");
             csModelList.remove(String.format("MoppingRobotType2_%s",currentMoppingRobotType2));
             configuration.getConfiguration().put("numMoppingRobotType2", configuration.getConfiguration().get("numMoppingRobotType2") - 1);
+            setExecuted(true);
+
         }
+        return ret;
     }
 }

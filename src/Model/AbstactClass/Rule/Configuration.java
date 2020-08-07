@@ -1,5 +1,6 @@
 package Model.AbstactClass.Rule;
 
+import java.util.HashMap;
 import java.util.Map;
 
 abstract public class Configuration {
@@ -17,6 +18,7 @@ abstract public class Configuration {
 
     public Configuration(int numOfVariables) {
         this.numOfVariables = numOfVariables;
+        configuration = new HashMap<>(0);
     }
 
     public int getNumOfVariables() {

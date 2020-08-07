@@ -17,9 +17,21 @@ public class Strategy {
         strategy.remove(tactic);
     }
 
-    public void run(Configuration configuration) throws CloneNotSupportedException {
-        for(Tactic t : strategy) {
-            t.run(configuration);
-        }
+    public ArrayList<Tactic> getStrategy() {
+        return strategy;
     }
+
+//    public double[] run(Configuration configuration, Strategy curStrategy) throws CloneNotSupportedException {
+//
+//        Tactic curTactic = null;
+//
+//        for(Tactic t : curStrategy.getStrategy()) {
+//            if (!t.isExecuted()) {
+//                curTactic = t;
+//                break;
+//            }
+//        }
+//        assert curTactic != null;
+//        return curTactic.run(configuration);
+//    }
 }
