@@ -54,4 +54,27 @@ public class SimulationEngine {
         return new double[]{SoSGoal, latency, cost};
     }
 
+    public static void ExecuteStrategyAtRunTime(SoS sos, Strategy selectedStrategy, int simulationTime) throws CloneNotSupportedException {
+
+        double latency = 0.0;
+        double cost = 0.0;
+        double[] tempValues = new double[2];
+
+        for(int tick = 1; tick <= simulationTime; tick++) {
+            tempValues[0] = 0.0;
+            tempValues[1] = 0.0;
+
+            run();
+            tempValues = runStrategy(sos.getSoSConfiguration(), selectedStrategy);
+
+            cost += tempValues[0];
+            latency += tempValues[1];
+        }
+
+        //strategy construct
+        //execute the strategy
+
+
+    }
+
 }

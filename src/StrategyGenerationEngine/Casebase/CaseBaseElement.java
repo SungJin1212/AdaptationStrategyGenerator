@@ -2,6 +2,7 @@ package StrategyGenerationEngine.Casebase;
 
 import Model.AbstactClass.Rule.Configuration;
 import StrategyGenerationEngine.Element.CaseBaseValue;
+import StrategyGenerationEngine.Element.StrategyElement;
 
 import java.util.ArrayList;
 
@@ -33,4 +34,8 @@ public class CaseBaseElement {
     public void addCaseBaseValue(CaseBaseValue caseBaseValue) {
         this.caseBaseValues.add(caseBaseValue);
     }
+
+
+
+
 }

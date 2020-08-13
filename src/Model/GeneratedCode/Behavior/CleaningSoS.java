@@ -4,6 +4,7 @@ package Model.GeneratedCode.Behavior;
 import Model.AbstactClass.Behavior.CS;
 import Model.AbstactClass.Behavior.SoS;
 import Model.AbstactClass.Rule.Strategy;
+import Model.AbstactClass.Rule.Tactic;
 import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
 
 import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
@@ -27,7 +28,7 @@ public class CleaningSoS extends SoS {
     public static int minNumOfMoppingRobotType2 = 1;
 
 
-    public static int MapSize = 10;
+    public static int MapSize = 20;
     public static int dustUnit;
     public static int[][] tileMap = new int[MapSize+1][MapSize+1];
 
@@ -113,6 +114,52 @@ public class CleaningSoS extends SoS {
                 EnvironmentModelList.put(String.format("Tile(%s,%s)",i,j), new Tile(i,j));
             }
         }
+    }
+
+    public Strategy getStrategy(int MType1, int MType2, int SType1, int SType2) throws CloneNotSupportedException {
+        Strategy strategy = new Strategy();
+
+        if(MType1 >= 0) {
+            while(MType1-- != 0) {
+                strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddMoppingRobotType1").clone());
+            }
+        }
+        else {
+            while(MType1++ != 0) {
+                strategy.AddTactic( (Tactic) tacticSpecificationList.get("RemoveMoppingRobotType1").clone());
+            }
+        }
+        if(MType2 >= 0) {
+            while(MType2-- != 0) {
+                strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddMoppingRobotType2").clone());
+            }
+        }
+        else {
+            while(MType2++ != 0) {
+                strategy.AddTactic( (Tactic) tacticSpecificationList.get("RemoveMoppingRobotType2").clone());
+            }
+        }
+        if(SType1 >= 0) {
+            while(SType1-- != 0) {
+                strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddSweepingRobotType1").clone());
+            }
+        }
+        else {
+            while(SType1++ != 0) {
+                strategy.AddTactic( (Tactic) tacticSpecificationList.get("RemoveSweepingRobotType1").clone());
+            }
+        }
+        if(SType2 >= 0) {
+            while(SType2-- != 0) {
+                strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddSweepingRobotType2").clone());
+            }
+        }
+        else {
+            while(SType2++ != 0) {
+                strategy.AddTactic((Tactic) tacticSpecificationList.get("RemoveSweepingRobotType2").clone());
+            }
+        }
+        return strategy;
     }
 
 //    public double[] getFitness(Strategy strategy, int simulationTime) throws CloneNotSupportedException {

@@ -30,14 +30,15 @@ public class GenerationEngine {
 
         NondominatedPopulation result = new Executor()
                 .withProblemClass(CleaningSoSProblem.class, curCleaningSoSEnvironmentCondition, curCleaningSoSConfiguration)
-                .withProperty("populationSize", 50)
+                .withProperty("populationSize", 100)
                 .withProperty("withReplacement", true) // use binary tournament selection
                 .withAlgorithm("NSGA2")
-                .withMaxEvaluations(50)
+                .withMaxEvaluations(1000)
 //                .distributeOnAllCores() // parallelization execution.
                 .run();
+
 //        new Plot()
-//                .add("NSGA2", result)
+//                .add("NSGAII", result)
 //                .show();
         //display the results
         //System.out.format("Objective1  Objective2   Objective3%n");
@@ -75,7 +76,9 @@ public class GenerationEngine {
 
         Algorithm algorithm = new NSGAII( cleaningSoSProblem, new NondominatedSortingPopulation(), null, selection, variation, injectedInitialization);
 
-        while (algorithm.getNumberOfEvaluations() < 10000) {
+
+
+        while (algorithm.getNumberOfEvaluations() < 100) {
             algorithm.step();
         }
 

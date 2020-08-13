@@ -47,8 +47,6 @@ abstract public class SoS {
         tacticSpecificationList = new HashMap<>(0);
         this.environmentCondition = environmentCondition;
         this.configuration = configuration;
-
-
     }
 
 //    public void run() { //run active Environment -> cs

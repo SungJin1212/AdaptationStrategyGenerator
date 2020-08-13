@@ -1,7 +1,6 @@
 package StrategyGenerationEngine;
 
 import Model.AbstactClass.Rule.Strategy;
-import Model.AbstactClass.Rule.Tactic;
 import Model.GeneratedCode.Behavior.CleaningSoS;
 import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
 import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
@@ -9,7 +8,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
-import static Model.AbstactClass.Behavior.SoS.tacticSpecificationList;
 import static Simulator.SimulationEngine.getFitness;
 
 public class CleaningSoSProblem extends AbstractProblem {
@@ -39,48 +37,7 @@ public class CleaningSoSProblem extends AbstractProblem {
         /*making strategy*/
         try {
             CleaningSoS cleaningSoS = new CleaningSoS(this.cleaningSoSEnvironmentCondition, (CleaningSoSConfiguration) this.cleaningSoSConfiguration.clone()); // parameter 넘길때 deep copy 필요.
-            Strategy strategy = new Strategy();
-
-            if(MType1 >= 0) {
-                while(MType1-- != 0) {
-                    strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddMoppingRobotType1").clone());
-                }
-            }
-            else {
-                while(MType1++ != 0) {
-                    strategy.AddTactic( (Tactic) tacticSpecificationList.get("RemoveMoppingRobotType1").clone());
-                }
-            }
-            if(MType2 >= 0) {
-                while(MType2-- != 0) {
-                    strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddMoppingRobotType2").clone());
-                }
-            }
-            else {
-                while(MType2++ != 0) {
-                    strategy.AddTactic( (Tactic) tacticSpecificationList.get("RemoveMoppingRobotType2").clone());
-                }
-            }
-            if(SType1 >= 0) {
-                while(SType1-- != 0) {
-                    strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddSweepingRobotType1").clone());
-                }
-            }
-            else {
-                while(SType1++ != 0) {
-                    strategy.AddTactic( (Tactic) tacticSpecificationList.get("RemoveSweepingRobotType1").clone());
-                }
-            }
-            if(SType2 >= 0) {
-                while(SType2-- != 0) {
-                    strategy.AddTactic( (Tactic) tacticSpecificationList.get("AddSweepingRobotType2").clone());
-                }
-            }
-            else {
-                while(SType2++ != 0) {
-                    strategy.AddTactic((Tactic) tacticSpecificationList.get("RemoveSweepingRobotType2").clone());
-                }
-            }
+            Strategy strategy = cleaningSoS.getStrategy(MType1, MType2, SType1, SType2);
             Goals = getFitness(cleaningSoS, strategy, 50);
             //Goals = cleaningSoS.getFitness(strategy, 50);
 
@@ -93,6 +50,8 @@ public class CleaningSoSProblem extends AbstractProblem {
         solution.setObjective(1, Goals[1]); //minimize goal
         solution.setObjective(2, Goals[2]); //minimize goal
     }
+
+
 
     @Override
     public Solution newSolution() {
