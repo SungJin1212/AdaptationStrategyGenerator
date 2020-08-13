@@ -27,7 +27,7 @@ public class CleaningSoS extends SoS {
     public static int minNumOfMoppingRobotType2 = 1;
 
 
-    public static int MapSize = 20;
+    public static int MapSize = 10;
     public static int dustUnit;
     public static int[][] tileMap = new int[MapSize+1][MapSize+1];
 
@@ -115,22 +115,21 @@ public class CleaningSoS extends SoS {
         }
     }
 
-
-    public double[] getFitness(Strategy strategy, int simulationTime) throws CloneNotSupportedException {
-        double latency = 0.0;
-        double cost = 0.0;
-        double[] tempValues = new double[2];
-
-        for(int t=1; t<=simulationTime; t++) {
-                tempValues[0] = 0.0;
-                tempValues[1] = 0.0;
-
-                super.run();
-                tempValues = super.runStrategy(getSoSConfiguration(), strategy);
-
-                cost += tempValues[0];
-                latency += tempValues[1];
-        }
-        return new double[]{SoSGoal, latency, cost};
-    }
+//    public double[] getFitness(Strategy strategy, int simulationTime) throws CloneNotSupportedException {
+//        double latency = 0.0;
+//        double cost = 0.0;
+//        double[] tempValues = new double[2];
+//
+//        for(int t=1; t<=simulationTime; t++) {
+//                tempValues[0] = 0.0;
+//                tempValues[1] = 0.0;
+//
+//                super.run();
+//                tempValues = super.runStrategy(getSoSConfiguration(), strategy);
+//
+//                cost += tempValues[0];
+//                latency += tempValues[1];
+//        }
+//        return new double[]{SoSGoal, latency, cost};
+//    }
 }

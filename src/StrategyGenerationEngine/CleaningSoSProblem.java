@@ -10,6 +10,7 @@ import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
 import static Model.AbstactClass.Behavior.SoS.tacticSpecificationList;
+import static Simulator.SimulationEngine.getFitness;
 
 public class CleaningSoSProblem extends AbstractProblem {
 
@@ -80,8 +81,8 @@ public class CleaningSoSProblem extends AbstractProblem {
                     strategy.AddTactic((Tactic) tacticSpecificationList.get("RemoveSweepingRobotType2").clone());
                 }
             }
-
-            Goals = cleaningSoS.getFitness(strategy, 50);
+            Goals = getFitness(cleaningSoS, strategy, 50);
+            //Goals = cleaningSoS.getFitness(strategy, 50);
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();

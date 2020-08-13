@@ -2,7 +2,7 @@ package ExpectedOutput.MOP;
 
 import Model.AbstactClass.SoS;
 import Model.GeneratedCode.Behavior.CleaningSoS;
-import Simulator.Simulator;
+import Simulator.SimulationEngine;
 import org.moeaframework.Executor;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -27,7 +27,7 @@ public class cleaningSoSProblem extends AbstractProblem {
 
         cleaningSoSConfiguration configuration = new cleaningSoSConfiguration(NumOfSweepingRobotType1,NumOfSweepingRobotType2,NumOfSweepingRobotType3,NumOfMoppingRobotType1,NumOfMoppingRobotType2,NumOfMoppingRobotType3);
         SoS cleaningSoS = new CleaningSoS(configuration);
-        Simulator simulator = new Simulator(cleaningSoS);
+        SimulationEngine simulator = new SimulationEngine(cleaningSoS);
 
 
 

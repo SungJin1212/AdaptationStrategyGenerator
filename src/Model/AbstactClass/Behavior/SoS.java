@@ -51,31 +51,31 @@ abstract public class SoS {
 
     }
 
-    public void run() { //run active Environment -> cs
-        for(String key : EnvironmentModelList.keySet()) {
-            EnvironmentModelList.get(key).run();
-        }
-        for(String key : csModelList.keySet()) {
-            csModelList.get(key).run();
-        }
-    }
+//    public void run() { //run active Environment -> cs
+//        for(String key : EnvironmentModelList.keySet()) {
+//            EnvironmentModelList.get(key).run();
+//        }
+//        for(String key : csModelList.keySet()) {
+//            csModelList.get(key).run();
+//        }
+//    }
+//
+//    public double[] runStrategy(Configuration configuration, Strategy strategy) throws CloneNotSupportedException {
+//        Tactic curTactic = null;
+//
+//        for(Tactic t : strategy.getStrategy()) {
+//            if(!t.isExecuted()) {
+//                curTactic = t;
+//                break;
+//            }
+//        }
+//        if (curTactic == null) {
+//            return new double[] {0.0,0.0};
+//        }
+//
+//        return curTactic.run(configuration);
+//    }
 
-    public double[] runStrategy(Configuration configuration, Strategy strategy) throws CloneNotSupportedException {
-        Tactic curTactic = null;
-
-        for(Tactic t : strategy.getStrategy()) {
-            if(!t.isExecuted()) {
-                curTactic = t;
-                break;
-            }
-        }
-        if (curTactic == null) {
-            return new double[] {0.0,0.0};
-        }
-
-        return curTactic.run(configuration);
-    }
-
-    abstract public double[] getFitness(Strategy strategy, int simulationTime) throws CloneNotSupportedException;
+//    abstract public double[] getFitness(Strategy strategy, int simulationTime) throws CloneNotSupportedException;
 
 }

@@ -8,8 +8,8 @@ import StrategyGenerationEngine.Element.StrategyElement;
 
 import java.util.ArrayList;
 
+import static StrategyGenerationEngine.GenerationEngine.getCaseBaseValueAtDesignTime;
 import static StrategyGenerationEngine.GenerationEngine.getCaseBaseValueAtRunTime;
-import static StrategyGenerationEngine.StrategyGenerationAtDesignTime.getCaseBaseValueAtDesignTime;
 
 
 public class MainLogic implements Cloneable {

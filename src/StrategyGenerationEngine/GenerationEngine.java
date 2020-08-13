@@ -29,12 +29,12 @@ public class GenerationEngine {
 //        InjectedInitialization injectedInitialization = new InjectedInitialization(StrategyGenerationAtDesignTime.class, 50, )
 
         NondominatedPopulation result = new Executor()
-                .withProblemClass(StrategyGenerationAtDesignTime.class, curCleaningSoSEnvironmentCondition, curCleaningSoSConfiguration)
+                .withProblemClass(CleaningSoSProblem.class, curCleaningSoSEnvironmentCondition, curCleaningSoSConfiguration)
                 .withProperty("populationSize", 50)
                 .withProperty("withReplacement", true) // use binary tournament selection
                 .withAlgorithm("NSGA2")
                 .withMaxEvaluations(50)
-                .distributeOnAllCores() // parallelization execution.
+//                .distributeOnAllCores() // parallelization execution.
                 .run();
 //        new Plot()
 //                .add("NSGA2", result)
