@@ -1,28 +1,28 @@
-import Model.AbstactClass.Behavior.Environment;
-import Model.AbstactClass.Rule.Configuration;
+package StrategyGenerationEngine;
+
 import Model.AbstactClass.Rule.Strategy;
 import Model.AbstactClass.Rule.Tactic;
 import Model.GeneratedCode.Behavior.CleaningSoS;
-import Model.GeneratedCode.Rule.EnvironmentCondition;
-import Model.GeneratedCode.Rule.cleaningSoSConfiguration;
-import org.moeaframework.Executor;
-import org.moeaframework.core.NondominatedPopulation;
+import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
+import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
 import static Model.AbstactClass.Behavior.SoS.tacticSpecificationList;
 
-public class Test extends AbstractProblem {
+public class CleaningSoSProblem extends AbstractProblem {
 
-    private EnvironmentCondition environmentCondition;
-    private cleaningSoSConfiguration cleaningSoSConfiguration;
+    private CleaningSoSEnvironmentCondition cleaningSoSEnvironmentCondition;
+    private CleaningSoSConfiguration cleaningSoSConfiguration;
 
-    public Test(EnvironmentCondition environmentCondition, cleaningSoSConfiguration cleaningSoSConfiguration) {
+
+    public CleaningSoSProblem(CleaningSoSEnvironmentCondition cleaningSoSEnvironmentCondition, CleaningSoSConfiguration cleaningSoSConfiguration) {
         super(4,3);
-        this.environmentCondition = environmentCondition;
+        this.cleaningSoSEnvironmentCondition = cleaningSoSEnvironmentCondition;
         this.cleaningSoSConfiguration = cleaningSoSConfiguration;
     }
+
     @Override
     public void evaluate(Solution solution) {
         int MType1 = EncodingUtils.getInt(solution.getVariable(0));
@@ -31,10 +31,13 @@ public class Test extends AbstractProblem {
         int SType2 = EncodingUtils.getInt(solution.getVariable(3));
         double[] Goals = null;
 
-        //EnvironmentCondition environmentCondition = new EnvironmentCondition(10);
-        //cleaningSoSConfiguration configuration = new cleaningSoSConfiguration(5, 5, 5, 5);
+
+
+        //CleaningSoSEnvironmentCondition cleaningSoSEnvironmentCondition = new CleaningSoSEnvironmentCondition(10);
+        //CleaningSoSConfiguration configuration = new CleaningSoSConfiguration(5, 5, 5, 5);
+        /*making strategy*/
         try {
-            CleaningSoS cleaningSoS = new CleaningSoS(this.environmentCondition, this.cleaningSoSConfiguration);
+            CleaningSoS cleaningSoS = new CleaningSoS(this.cleaningSoSEnvironmentCondition, (CleaningSoSConfiguration) this.cleaningSoSConfiguration.clone()); // parameter 넘길때 deep copy 필요.
             Strategy strategy = new Strategy();
 
             if(MType1 >= 0) {
@@ -78,61 +81,26 @@ public class Test extends AbstractProblem {
                 }
             }
 
-            Goals = cleaningSoS.getFitness(strategy);
+            Goals = cleaningSoS.getFitness(strategy, 50);
+
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
 
         assert Goals != null;
-        solution.setObjective(0, -Goals[0]); //minimize
-        solution.setObjective(1, Goals[1]); //minimize
-        solution.setObjective(2, Goals[2]); //minimize
-
+        solution.setObjective(0, -Goals[0]); //maximize goal
+        solution.setObjective(1, Goals[1]); //minimize goal
+        solution.setObjective(2, Goals[2]); //minimize goal
     }
 
     @Override
     public Solution newSolution() {
-
         Solution solution = new Solution(getNumberOfVariables(),
                 getNumberOfObjectives());
-
         solution.setVariable(0, EncodingUtils.newInt(-5, 5));
         solution.setVariable(1, EncodingUtils.newInt(-5, 5));
         solution.setVariable(2, EncodingUtils.newInt(-5, 5));
         solution.setVariable(3, EncodingUtils.newInt(-5, 5));
-
         return solution;
     }
-
-    public static void main(String[] args) {
-
-        EnvironmentCondition environmentCondition = new EnvironmentCondition(10);
-        cleaningSoSConfiguration cleaningSoSConfiguration = new cleaningSoSConfiguration(5,5,5,5);
-        passingTest(environmentCondition,cleaningSoSConfiguration);
-    }
-
-    private static void passingTest(EnvironmentCondition environmentCondition, cleaningSoSConfiguration cleaningSoSConfiguration) {
-        NondominatedPopulation result = new Executor()
-                .withProblemClass(Test.class, environmentCondition, cleaningSoSConfiguration)
-                .withProperty("populationSize", 40)
-                .withAlgorithm("NSGA2")
-                .withMaxEvaluations(30)
-                .run();
-        //display the results
-        System.out.format("Objective1  Objective2   Objective3%n");
-
-        for (Solution solution : result) { //all Pareto optimal solutions produced by the algorithm during the run.
-            System.out.format("%.4f      %.4f      %.4f     %d      %d       %d       %d%n",
-                    -solution.getObjective(0),
-                    solution.getObjective(1),
-                    solution.getObjective(2),
-
-                    EncodingUtils.getInt(solution.getVariable(0)),
-                    EncodingUtils.getInt(solution.getVariable(1)),
-                    EncodingUtils.getInt(solution.getVariable(2)),
-                    EncodingUtils.getInt(solution.getVariable(3))
-            );
-        }
-    }
-
 }

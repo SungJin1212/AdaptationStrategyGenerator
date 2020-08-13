@@ -1,7 +1,5 @@
 package Model.AbstactClass.Rule;
 
-import Model.AbstactClass.Behavior.CS;
-
 abstract public class Tactic implements Cloneable {
     private double cost; //실행하는데 소요되는 cost
     private double latency; //실행하는데 소요되는 시간

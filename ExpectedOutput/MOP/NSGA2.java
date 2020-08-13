@@ -25,7 +25,7 @@ public class NSGA2 {
 //
 //
 //
-//                cleaningSoSConfiguration sibling = new cleaningSoSConfiguration();
+//                CleaningSoSConfiguration sibling = new CleaningSoSConfiguration();
 //
 //
 //                offspring.AddPopulation(sibling);

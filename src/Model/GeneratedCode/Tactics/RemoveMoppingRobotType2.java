@@ -2,9 +2,9 @@ package Model.GeneratedCode.Tactics;
 
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Tactic;
-import Model.GeneratedCode.Behavior.CleaningSoS;
 
 import static Model.AbstactClass.Behavior.SoS.csModelList;
+import static Model.GeneratedCode.Behavior.CleaningSoS.minNumOfMoppingRobotType2;
 
 public class RemoveMoppingRobotType2 extends Tactic implements Cloneable {
     private double remainTime = getLatency();
@@ -16,7 +16,13 @@ public class RemoveMoppingRobotType2 extends Tactic implements Cloneable {
 
     @Override
     public double[] run(Configuration configuration) throws CloneNotSupportedException {
-        double[] ret = new double[2];
+        double[] ret = new double[2]; //cost, latency
+
+        if(configuration.getConfiguration().get("numMoppingRobotType2") - 1 <= minNumOfMoppingRobotType2) {
+            setExecuted(true);
+            ret[1] = 1; //1 tick 소요됨
+            return ret;
+        }
 
         if(--remainTime == 0) {
             ret[0] = getCost();
