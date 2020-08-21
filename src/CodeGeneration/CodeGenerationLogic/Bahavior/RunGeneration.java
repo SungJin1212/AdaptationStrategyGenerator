@@ -12,61 +12,77 @@ import java.util.Set;
 public class RunGeneration {
 
     public static MethodSpec getRun(ArrayList<State> states, ArrayList<Transition> transitions, Set<Synchronization> allTransition) {
-        double temp;
         MethodSpec.Builder runCode = MethodSpec.methodBuilder("run").addModifiers(Modifier.PUBLIC);
 
         runCode.addStatement("Status aStatus = status");
         runCode.beginControlFlow("switch(aStatus)");
 
         for(State s : states) {
+            if (s.getAtomic().equals("1")) continue;
 
-            if(s.getAtomic().equals("1")) continue; // atomic 이면 continue
-
-            ArrayList<Transition> tempTransitions = new ArrayList<>(0); // 한 state에서 나가는 transition들
+            ArrayList<Transition> outTransitions = new ArrayList<>(0);
             for(Transition t : transitions) {
                 if(s.getStateName().equals(t.getFrom())) {
                     if(getLastChar(t.getTrigger()) != '?') { //receive 아니면
-                        tempTransitions.add(t);
+                        outTransitions.add(t);
                     }
                 }
             }
 
             runCode.beginControlFlow("case " + s.getStateName() + ":");
+
+
             if(!s.getTime().equals("1")) { // Time 1이 아니면.
                 runCode.beginControlFlow("if(--$NTime == 0)", s.getStateName());
             }
             if(!s.getTime().equals("1")) { // Time 1이 아니면.
                 runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
             }
-            if (tempTransitions.size() == 1) { //나가는 Transition 의 갯수가 1개인 경우
-                Transition t = tempTransitions.get(0);
-                if(!t.getGuard().equals("")) {
-                    runCode.beginControlFlow("if($N)", t.getGuard());
-                }
-                if(!t.getProbability().equals("1")) {
-                    runCode.beginControlFlow("if(Math.random() < $N)", t.getProbability());
-                }
-                if (t.getTrigger().contains("!")) {
-                    String call = getSendCallStatement(allTransition, t);
-                    runCode.addStatement(call);
-                    // 같은 이름인 채널 call. 타입검사 해야됨.
-                }
-                else{
-                    runCode.addStatement(t.getTrigger() + "()");
-                }
 
-                runCode.addStatement("break");
-                if(!t.getProbability().equals("1")) {
-                    runCode.endControlFlow();
-                }
-                if(!t.getGuard().equals("")) {
-                    runCode.endControlFlow();
-                }
+            for(Transition t : outTransitions) {
+                runCode.addStatement("double $NProbability = 0", t.getTo());
             }
 
-            else if (tempTransitions.size() >= 2 && tempTransitions.get(0).getProbability().equals("1")) { //확률이 모두다 1 이지만 guard 로 Precondition 들을 체크해야 하는 경우
-                for (Transition t : tempTransitions) {
-                    runCode.beginControlFlow("if ($N)",t.getGuard());
+            for(Transition t : outTransitions) {
+                runCode.beginControlFlow("if ($N)",t.getGuard());
+                runCode.addStatement("$NProbability = $N", t.getTo(), t.getProbability());
+                runCode.endControlFlow();
+            }
+
+            int first = 0;
+            String temp = "";
+            String curPro = "";
+            String totalPro = "(";
+            for(Transition t: outTransitions) {
+                totalPro += t.getTo() + "Probability+";
+            }
+            totalPro = totalPro.substring(0, totalPro.length()-1);
+            totalPro += ")";
+            runCode.addStatement("double pro = Math.random()");
+            for(Transition t : outTransitions) {
+                if (first == 0) {
+                    curPro += t.getTo() + "Probability";
+                    runCode.beginControlFlow("if(pro < $N / $N)", curPro, totalPro);
+                    if (t.getTrigger().contains("!")) {
+                        String call = getSendCallStatement(allTransition, t);
+                        runCode.addStatement(call);
+                        // 같은 이름인 채널 call. 타입검사 해야됨.
+                    }
+                    else{
+                        runCode.addStatement(t.getTrigger() + "()");
+                    }
+                    if(!s.getTime().equals("1")) { // Time 1이 아니면.
+                        runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+                    }
+                    runCode.addStatement("break");
+                    runCode.endControlFlow();
+                    first++;
+                }
+                else {
+                    temp = curPro;
+                    curPro += "+" + t.getTo() + "Probability";
+                    runCode.beginControlFlow("else if(pro > $N / $N && pro <= $N / $N)", temp, totalPro, curPro, totalPro);
+//                    runCode.beginControlFlow("else if(pro < $N / $N)", curPro, totalPro);
                     if (t.getTrigger().contains("!")) {
                         String call = getSendCallStatement(allTransition, t);
                         runCode.addStatement(call);
@@ -82,56 +98,127 @@ public class RunGeneration {
                     runCode.endControlFlow();
                 }
             }
-            else { //확률이 1미만인 transition 들
-                temp = 0;
-                double totalpro = 0;
-                for(Transition t: tempTransitions) {
-                    totalpro += Double.parseDouble(t.getProbability());
-                }
-                runCode.addStatement("double pro = Math.random()");
-                for(Transition t : tempTransitions) {
-                    if(temp == 0) {
-                        runCode.beginControlFlow("if(pro < $N)",  String.valueOf(Double.parseDouble(t.getProbability())/totalpro));
-                        if (t.getTrigger().contains("!")) {
-                            String call = getSendCallStatement(allTransition, t);
-                            runCode.addStatement(call);
-                            // 같은 이름인 채널 call. 타입검사 해야됨.
-                        }
-                        else{
-                            runCode.addStatement(t.getTrigger() + "()");
-                        }
-                        if(!s.getTime().equals("1")) { // Time 1이 아니면.
-                            runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
-                        }
-                        runCode.addStatement("break");
-                        temp += Double.parseDouble(t.getProbability());
-                        runCode.endControlFlow();
-                    }
-                    else{
-                        runCode.beginControlFlow("else if(pro > $N && pro <= $N)", String.valueOf(temp/totalpro), String.valueOf((temp + Double.parseDouble(t.getProbability()))/totalpro));
-                        if (t.getTrigger().contains("!")) {
-                            String call = getSendCallStatement(allTransition, t);
-                            runCode.addStatement(call);
-                            // 같은 이름인 채널 call. 타입검사 해야됨.
-                        }
-                        else{
-                            runCode.addStatement(t.getTrigger() + "()");
-                        }
-                        if(!s.getTime().equals("1")) { // Time 1이 아니면.
-                            runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
-                        }
-                        runCode.addStatement("break");
-                        temp += Double.parseDouble(t.getProbability());
-                        runCode.endControlFlow();
-                    }
-                }
-
-            }
+            /*end of case logic */
             if(!s.getTime().equals("1")) { // Time 1이 아니면.
                 runCode.endControlFlow();
             }
             runCode.endControlFlow();
         }
+
+//        for(State s : states) {
+//
+//            if(s.getAtomic().equals("1")) continue; // atomic 이면 continue
+//
+//            ArrayList<Transition> tempTransitions = new ArrayList<>(0); // 한 state에서 나가는 transition들
+//            for(Transition t : transitions) {
+//                if(s.getStateName().equals(t.getFrom())) {
+//                    if(getLastChar(t.getTrigger()) != '?') { //receive 아니면
+//                        tempTransitions.add(t);
+//                    }
+//                }
+//            }
+//
+//            runCode.beginControlFlow("case " + s.getStateName() + ":");
+//            if(!s.getTime().equals("1")) { // Time 1이 아니면.
+//                runCode.beginControlFlow("if(--$NTime == 0)", s.getStateName());
+//            }
+//            if(!s.getTime().equals("1")) { // Time 1이 아니면.
+//                runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+//            }
+//            if (tempTransitions.size() == 1) { //나가는 Transition 의 갯수가 1개인 경우
+//                Transition t = tempTransitions.get(0);
+//                if(!t.getGuard().equals("")) {
+//                    runCode.beginControlFlow("if($N)", t.getGuard());
+//                }
+//                if(!t.getProbability().equals("1")) {
+//                    runCode.beginControlFlow("if(Math.random() < $N)", t.getProbability());
+//                }
+//                if (t.getTrigger().contains("!")) {
+//                    String call = getSendCallStatement(allTransition, t);
+//                    runCode.addStatement(call);
+//                    // 같은 이름인 채널 call. 타입검사 해야됨.
+//                }
+//                else{
+//                    runCode.addStatement(t.getTrigger() + "()");
+//                }
+//
+//                runCode.addStatement("break");
+//                if(!t.getProbability().equals("1")) {
+//                    runCode.endControlFlow();
+//                }
+//                if(!t.getGuard().equals("")) {
+//                    runCode.endControlFlow();
+//                }
+//            }
+//
+//            else if (tempTransitions.size() >= 2 && tempTransitions.get(0).getProbability().equals("1")) { //확률이 모두다 1 이지만 guard 로 Precondition 들을 체크해야 하는 경우
+//                for (Transition t : tempTransitions) {
+//                    runCode.beginControlFlow("if ($N)",t.getGuard());
+//                    if (t.getTrigger().contains("!")) {
+//                        String call = getSendCallStatement(allTransition, t);
+//                        runCode.addStatement(call);
+//                        // 같은 이름인 채널 call. 타입검사 해야됨.
+//                    }
+//                    else{
+//                        runCode.addStatement(t.getTrigger() + "()");
+//                    }
+//                    if(!s.getTime().equals("1")) { // Time 1이 아니면.
+//                        runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+//                    }
+//                    runCode.addStatement("break");
+//                    runCode.endControlFlow();
+//                }
+//            }
+//            else { //확률이 1미만인 transition 들
+//                temp = 0;
+//                double totalpro = 0;
+//                for(Transition t: tempTransitions) {
+//                    totalpro += Double.parseDouble(t.getProbability());
+//                }
+//                runCode.addStatement("double pro = Math.random()");
+//                for(Transition t : tempTransitions) {
+//                    if(temp == 0) {
+//                        runCode.beginControlFlow("if(pro < $N)",  String.valueOf(Double.parseDouble(t.getProbability())/totalpro));
+//                        if (t.getTrigger().contains("!")) {
+//                            String call = getSendCallStatement(allTransition, t);
+//                            runCode.addStatement(call);
+//                            // 같은 이름인 채널 call. 타입검사 해야됨.
+//                        }
+//                        else{
+//                            runCode.addStatement(t.getTrigger() + "()");
+//                        }
+//                        if(!s.getTime().equals("1")) { // Time 1이 아니면.
+//                            runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+//                        }
+//                        runCode.addStatement("break");
+//                        temp += Double.parseDouble(t.getProbability());
+//                        runCode.endControlFlow();
+//                    }
+//                    else{
+//                        runCode.beginControlFlow("else if(pro > $N && pro <= $N)", String.valueOf(temp/totalpro), String.valueOf((temp + Double.parseDouble(t.getProbability()))/totalpro));
+//                        if (t.getTrigger().contains("!")) {
+//                            String call = getSendCallStatement(allTransition, t);
+//                            runCode.addStatement(call);
+//                            // 같은 이름인 채널 call. 타입검사 해야됨.
+//                        }
+//                        else{
+//                            runCode.addStatement(t.getTrigger() + "()");
+//                        }
+//                        if(!s.getTime().equals("1")) { // Time 1이 아니면.
+//                            runCode.addStatement("$NTime = $N", s.getStateName(), s.getTime());
+//                        }
+//                        runCode.addStatement("break");
+//                        temp += Double.parseDouble(t.getProbability());
+//                        runCode.endControlFlow();
+//                    }
+//                }
+//
+//            }
+//            if(!s.getTime().equals("1")) { // Time 1이 아니면.
+//                runCode.endControlFlow();
+//            }
+//            runCode.endControlFlow();
+//        }
 
 
 

@@ -15,6 +15,22 @@ public class CaseBaseValue {
         strategyList = new ArrayList<>(0);
     }
 
+    public StrategyElement getBestStrategy() {
+        StrategyElement bestStrategy = new StrategyElement();
+        double maxFitness = -987654321;
+
+
+        for(StrategyElement strategyElement : strategyList) {
+            double curFitness = getFitness(strategyElement);
+            if (maxFitness < curFitness) {
+                maxFitness = curFitness;
+                bestStrategy.setGoalValueList(strategyElement.getGoalValueList());
+                bestStrategy.setStrategyValueList(strategyElement.getStrategyValueList());
+            }
+        }
+        return bestStrategy;
+    }
+
     public EnvironmentCondition getEnvironmentCondition() {
         return environmentCondition;
     }
@@ -25,6 +41,7 @@ public class CaseBaseValue {
 
     public void setStrategyList(ArrayList<StrategyElement> strategyList) {
         this.strategyList = strategyList;
+        calAverageFitness();
     }
 
     public void setAverageFitness(double averageFitness) {
@@ -48,6 +65,7 @@ public class CaseBaseValue {
     }
 
     public double getAverageFitness() {
+        calAverageFitness();
         return averageFitness;
     }
 }

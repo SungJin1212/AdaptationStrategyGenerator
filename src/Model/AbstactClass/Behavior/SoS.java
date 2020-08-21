@@ -2,13 +2,8 @@ package Model.AbstactClass.Behavior;
 
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.EnvironmentCondition;
-import Model.AbstactClass.Rule.Strategy;
 import Model.AbstactClass.Rule.Tactic;
-import Model.GeneratedCode.Behavior.CleaningSoS;
-import StrategyGenerationEngine.Element.CaseBaseValue;
-import StrategyGenerationEngine.Element.StrategyElement;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,31 +44,13 @@ abstract public class SoS {
         this.configuration = configuration;
     }
 
-//    public void run() { //run active Environment -> cs
-//        for(String key : EnvironmentModelList.keySet()) {
-//            EnvironmentModelList.get(key).run();
-//        }
-//        for(String key : csModelList.keySet()) {
-//            csModelList.get(key).run();
-//        }
-//    }
-//
-//    public double[] runStrategy(Configuration configuration, Strategy strategy) throws CloneNotSupportedException {
-//        Tactic curTactic = null;
-//
-//        for(Tactic t : strategy.getStrategy()) {
-//            if(!t.isExecuted()) {
-//                curTactic = t;
-//                break;
-//            }
-//        }
-//        if (curTactic == null) {
-//            return new double[] {0.0,0.0};
-//        }
-//
-//        return curTactic.run(configuration);
-//    }
+    public void setSoSConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
-//    abstract public double[] getFitness(Strategy strategy, int simulationTime) throws CloneNotSupportedException;
+    public void setSoSEnvironmentCondition(EnvironmentCondition environmentCondition) {
+        this.environmentCondition = environmentCondition;
+    }
+
 
 }

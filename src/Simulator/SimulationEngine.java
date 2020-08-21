@@ -37,6 +37,7 @@ public class SimulationEngine {
     }
 
     public static double[] getFitness(SoS sos, Strategy strategy, int simulationTime) throws CloneNotSupportedException {
+        SoSGoal = 0;
         double latency = 0.0;
         double cost = 0.0;
         double[] tempValues = new double[2];
@@ -70,6 +71,8 @@ public class SimulationEngine {
             cost += tempValues[0];
             latency += tempValues[1];
         }
+
+
 
         //strategy construct
         //execute the strategy

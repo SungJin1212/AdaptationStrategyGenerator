@@ -11,7 +11,7 @@ public class RemoveMoppingRobotType2 extends Tactic implements Cloneable {
 
     public RemoveMoppingRobotType2() {
 
-        super(3, 3, "RemoveMoppingRobotType2");
+        super(1, 1, "RemoveMoppingRobotType2");
     }
 
     @Override

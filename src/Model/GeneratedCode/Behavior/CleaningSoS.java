@@ -3,6 +3,7 @@ package Model.GeneratedCode.Behavior;
 
 import Model.AbstactClass.Behavior.CS;
 import Model.AbstactClass.Behavior.SoS;
+import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Strategy;
 import Model.AbstactClass.Rule.Tactic;
 import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
@@ -15,20 +16,21 @@ public class CleaningSoS extends SoS {
     /*Global Variables*/
     public static int INITIALDUST = 200;
     public static int MopDust = 100;
+    public static int dustMax = 400;
 
     /*Constraint*/
-    public static int maxNumOfSweepingRobotType1 = 10;
+    public static int maxNumOfSweepingRobotType1 = 20;
     public static int minNumOfSweepingRobotType1 = 1;
-    public static int maxNumOfSweepingRobotType2 = 10;
+    public static int maxNumOfSweepingRobotType2 = 20;
     public static int minNumOfSweepingRobotType2 = 1;
 
-    public static int maxNumOfMoppingRobotType1 = 10;
+    public static int maxNumOfMoppingRobotType1 = 20;
     public static int minNumOfMoppingRobotType1 = 1;
-    public static int maxNumOfMoppingRobotType2 = 10;
+    public static int maxNumOfMoppingRobotType2 = 20;
     public static int minNumOfMoppingRobotType2 = 1;
 
 
-    public static int MapSize = 20;
+    public static int MapSize = 10;
     public static int dustUnit;
     public static int[][] tileMap = new int[MapSize+1][MapSize+1];
 
@@ -46,6 +48,8 @@ public class CleaningSoS extends SoS {
 
     public void setRuntimeEnvironment(CleaningSoSEnvironmentCondition cleaningSoSEnvironmentCondition) {
         dustUnit = cleaningSoSEnvironmentCondition.getEnvironmentCondition().get("dustUnit");
+        setSoSEnvironmentCondition(cleaningSoSEnvironmentCondition);
+
 //        dustUnit = cleaningSoSEnvironmentCondition.getDustUnit();
     }
 
@@ -70,10 +74,10 @@ public class CleaningSoS extends SoS {
     }
 
     private void AddSystemSpecification() {
-        csSpecificationList.put("SweepingRobotType1", new SweepingRobot(10));
-        csSpecificationList.put("SweepingRobotType2", new SweepingRobot(60));
-        csSpecificationList.put("MoppingRobotType1", new MoppingRobot(10));
-        csSpecificationList.put("MoppingRobotType2", new MoppingRobot(60));
+        csSpecificationList.put("SweepingRobotType1", new SweepingRobot(50));
+        csSpecificationList.put("SweepingRobotType2", new SweepingRobot(90));
+        csSpecificationList.put("MoppingRobotType1", new MoppingRobot(50));
+        csSpecificationList.put("MoppingRobotType2", new MoppingRobot(90));
         csSpecificationList.put("DustController", new DustController());
     }
 
@@ -88,7 +92,7 @@ public class CleaningSoS extends SoS {
         tacticSpecificationList.put("RemoveSweepingRobotType2", new RemoveSweepingRobotType2());
     }
 
-    private void AddCSs(CleaningSoSConfiguration configuration) throws CloneNotSupportedException {
+    private void AddCSs(Configuration configuration) throws CloneNotSupportedException {
 
         for(int i = 1; i<= configuration.getConfiguration().get("numSweepingRobotType1"); i++) {
             csModelList.put(String.format("SweepingRobotType1_%s",i), (CS) csSpecificationList.get("SweepingRobotType1").clone());
@@ -108,7 +112,6 @@ public class CleaningSoS extends SoS {
     }
 
     private void AddEnvironments() {
-
         for(int i=1; i<=MapSize; i++) {
             for(int j=1; j<=MapSize; j++) {
                 EnvironmentModelList.put(String.format("Tile(%s,%s)",i,j), new Tile(i,j));
@@ -162,21 +165,4 @@ public class CleaningSoS extends SoS {
         return strategy;
     }
 
-//    public double[] getFitness(Strategy strategy, int simulationTime) throws CloneNotSupportedException {
-//        double latency = 0.0;
-//        double cost = 0.0;
-//        double[] tempValues = new double[2];
-//
-//        for(int t=1; t<=simulationTime; t++) {
-//                tempValues[0] = 0.0;
-//                tempValues[1] = 0.0;
-//
-//                super.run();
-//                tempValues = super.runStrategy(getSoSConfiguration(), strategy);
-//
-//                cost += tempValues[0];
-//                latency += tempValues[1];
-//        }
-//        return new double[]{SoSGoal, latency, cost};
-//    }
 }

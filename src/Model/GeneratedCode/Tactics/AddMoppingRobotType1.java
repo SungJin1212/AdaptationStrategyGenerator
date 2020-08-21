@@ -13,7 +13,7 @@ public class AddMoppingRobotType1 extends Tactic implements Cloneable {
     private double remainTime = getLatency();
 
     public AddMoppingRobotType1() {
-        super(3, 3, "AddMoppingRobotType1");
+        super(1, 1, "AddMoppingRobotType1");
     }
 
     @Override

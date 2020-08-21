@@ -6,7 +6,6 @@ import Model.AbstactClass.Rule.Tactic;
 
 import static Model.AbstactClass.Behavior.SoS.csModelList;
 import static Model.AbstactClass.Behavior.SoS.csSpecificationList;
-import static Model.GeneratedCode.Behavior.CleaningSoS.maxNumOfMoppingRobotType2;
 import static Model.GeneratedCode.Behavior.CleaningSoS.maxNumOfSweepingRobotType1;
 
 public class AddSweepingRobotType1 extends Tactic implements Cloneable {
@@ -15,7 +14,7 @@ public class AddSweepingRobotType1 extends Tactic implements Cloneable {
 
     public AddSweepingRobotType1() {
 
-        super(3, 3, "AddSweepingRobotType1");
+        super(1, 1, "AddSweepingRobotType1");
     }
 
     @Override
