@@ -3,8 +3,8 @@ package CodeGeneration;
 import CodeGeneration.XMLParseDataType.State;
 import CodeGeneration.XMLParseDataType.Synchronization;
 import CodeGeneration.XMLParseDataType.Transition;
-import Model.AbstactClass.Behavior.Environment;
-import Model.AbstactClass.Behavior.CS;
+import Model.GeneratedCode.Behavior.Environment;
+import Model.GeneratedCode.Behavior.CS;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;

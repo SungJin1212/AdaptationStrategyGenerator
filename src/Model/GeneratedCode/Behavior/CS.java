@@ -1,4 +1,4 @@
-package Model.AbstactClass.Behavior;
+package Model.GeneratedCode.Behavior;
 
 abstract public class CS implements Cloneable {
 

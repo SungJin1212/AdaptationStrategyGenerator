@@ -19,7 +19,7 @@ public class CaseBase {
 
     public void printCaseBase() {
         for(CaseBaseElement caseBaseElement : caseBaseElements) {
-            ArrayList<Integer> configurationRet = new ArrayList<>(caseBaseElement.getConfiguration().getConfiguration().values());
+            ArrayList<Integer> configurationRet = new ArrayList<>(caseBaseElement.getConfiguration().getConfigurations().values());
             System.out.println(String.format("Configuration: %d %d %d %d", configurationRet.get(0), configurationRet.get(1), configurationRet.get(2), configurationRet.get(3)));
             for(CaseBaseValue caseBaseValue : caseBaseElement.getCaseBaseValues()) {
                 ArrayList<Integer> environmentConditionRet = new ArrayList<>(caseBaseValue.getEnvironmentCondition().getEnvironmentCondition().values());
@@ -47,12 +47,12 @@ public class CaseBase {
 
         ArrayList<CaseBaseValue> mostSimilarCaseBaseValues = null;
 
-        ArrayList<Integer> curConfigurationValues = new ArrayList<>(curConfiguration.getConfiguration().values());
+        ArrayList<Integer> curConfigurationValues = new ArrayList<>(curConfiguration.getConfigurations().values());
         ArrayList<Integer> curEnvironmentConditionValues = new ArrayList<>(curEnvironmentCondition.getEnvironmentCondition().values());
 
         int index = 0;
         for(CaseBaseElement caseBaseElement : caseBaseElements) {
-            ArrayList<Integer> caseBaseElementValues = new ArrayList<>(caseBaseElement.getConfiguration().getConfiguration().values());
+            ArrayList<Integer> caseBaseElementValues = new ArrayList<>(caseBaseElement.getConfiguration().getConfigurations().values());
             double curDist = getEuclideanDist(curConfigurationValues,caseBaseElementValues);
             if (configurationMinDist > curDist) {
                 configurationMinDist = curDist;
@@ -100,11 +100,11 @@ public class CaseBase {
         ArrayList<CaseBaseValue> mostSimilarCaseBaseValues = null;
         ArrayList<StrategyElement> mostSimilarStrategyElements = null;
 
-        ArrayList<Integer> curConfigurationValues = new ArrayList<>(curConfiguration.getConfiguration().values());
+        ArrayList<Integer> curConfigurationValues = new ArrayList<>(curConfiguration.getConfigurations().values());
         ArrayList<Integer> curEnvironmentConditionValues = new ArrayList<>(curEnvironmentCondition.getEnvironmentCondition().values());
 
         for(CaseBaseElement caseBaseElement : caseBaseElements) {
-            ArrayList<Integer> caseBaseElementValues = new ArrayList<>(caseBaseElement.getConfiguration().getConfiguration().values());
+            ArrayList<Integer> caseBaseElementValues = new ArrayList<>(caseBaseElement.getConfiguration().getConfigurations().values());
             double curDist = getEuclideanDist(curConfigurationValues,caseBaseElementValues);
             if (configurationMinDist > curDist) {
                 configurationMinDist = curDist;

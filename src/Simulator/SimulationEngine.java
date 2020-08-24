@@ -1,12 +1,12 @@
 package Simulator;
 
-import Model.AbstactClass.Behavior.SoS;
+import Model.GeneratedCode.Behavior.SoS;
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Strategy;
 import Model.AbstactClass.Rule.Tactic;
 
-import static Model.AbstactClass.Behavior.SoS.EnvironmentModelList;
-import static Model.AbstactClass.Behavior.SoS.csModelList;
+import static Model.GeneratedCode.Behavior.SoS.EnvironmentModelList;
+import static Model.GeneratedCode.Behavior.SoS.csModelList;
 import static Model.GeneratedCode.Behavior.CleaningSoS.SoSGoal;
 
 public class SimulationEngine {
@@ -56,6 +56,10 @@ public class SimulationEngine {
     }
 
     public static void ExecuteStrategyAtRunTime(SoS sos, Strategy selectedStrategy, int simulationTime) throws CloneNotSupportedException {
+
+//        for (Tactic t : selectedStrategy.getStrategy()) {
+//            System.out.println(t.getClass());
+//        }
 
         double latency = 0.0;
         double cost = 0.0;

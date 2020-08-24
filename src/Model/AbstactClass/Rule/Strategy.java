@@ -25,7 +25,7 @@ public class Strategy {
 //
 //        Tactic curTactic = null;
 //
-//        for(Tactic t : curStrategy.getStrategy()) {
+//        for(Tactic t : curStrategy.generateStrategy()) {
 //            if (!t.isExecuted()) {
 //                curTactic = t;
 //                break;

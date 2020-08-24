@@ -1,4 +1,4 @@
-package Model.AbstactClass.Behavior;
+package Model.GeneratedCode.Behavior;
 
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.EnvironmentCondition;
@@ -9,10 +9,18 @@ import java.util.Map;
 
 abstract public class SoS {
 
+
+    abstract void AddSystemSpecification();
+    abstract void AddTacticSpecification();
+    abstract void AddCSs(Configuration configuration) throws CloneNotSupportedException;
+    abstract void AddEnvironments();
+
     public static Map<String, CS> csModelList;
     public static Map<String, Environment> EnvironmentModelList;
     public static Map<String, CS> csSpecificationList;
     public static Map<String, Tactic> tacticSpecificationList;
+    public static double SoSGoal = 0;
+
     private Configuration configuration;
     private EnvironmentCondition environmentCondition;
 

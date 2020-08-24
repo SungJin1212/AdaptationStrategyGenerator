@@ -1,8 +1,6 @@
 package Model.GeneratedCode.Behavior;
 
 
-import Model.AbstactClass.Behavior.CS;
-import Model.AbstactClass.Behavior.SoS;
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Strategy;
 import Model.AbstactClass.Rule.Tactic;
@@ -34,7 +32,7 @@ public class CleaningSoS extends SoS {
     public static int dustUnit;
     public static int[][] tileMap = new int[MapSize+1][MapSize+1];
 
-    public static double SoSGoal = 0;
+
     public static int totalCost = 0;
     public static int moppedTile = 0;
     public static int sweeppedTile = 0;
@@ -65,6 +63,7 @@ public class CleaningSoS extends SoS {
         AddEnvironments();
     }
 
+
     private void InitGlobalVariables() {
         for(int i=1; i<=MapSize; i++) {
             for(int j=1; j<=MapSize; j++) {
@@ -72,16 +71,16 @@ public class CleaningSoS extends SoS {
             }
         }
     }
-
-    private void AddSystemSpecification() {
+    @Override
+    void AddSystemSpecification() {
         csSpecificationList.put("SweepingRobotType1", new SweepingRobot(50));
         csSpecificationList.put("SweepingRobotType2", new SweepingRobot(90));
         csSpecificationList.put("MoppingRobotType1", new MoppingRobot(50));
         csSpecificationList.put("MoppingRobotType2", new MoppingRobot(90));
         csSpecificationList.put("DustController", new DustController());
     }
-
-    private void AddTacticSpecification() {
+    @Override
+    void AddTacticSpecification() {
         tacticSpecificationList.put("AddMoppingRobotType1", new AddMoppingRobotType1());
         tacticSpecificationList.put("AddMoppingRobotType2", new AddMoppingRobotType2());
         tacticSpecificationList.put("AddSweepingRobotType1", new AddSweepingRobotType1());
@@ -91,27 +90,27 @@ public class CleaningSoS extends SoS {
         tacticSpecificationList.put("RemoveSweepingRobotType1", new RemoveSweepingRobotType1());
         tacticSpecificationList.put("RemoveSweepingRobotType2", new RemoveSweepingRobotType2());
     }
+    @Override
+    void AddCSs(Configuration configuration) throws CloneNotSupportedException {
 
-    private void AddCSs(Configuration configuration) throws CloneNotSupportedException {
-
-        for(int i = 1; i<= configuration.getConfiguration().get("numSweepingRobotType1"); i++) {
+        for(int i = 1; i<= configuration.getConfigurations().get("numSweepingRobotType1"); i++) {
             csModelList.put(String.format("SweepingRobotType1_%s",i), (CS) csSpecificationList.get("SweepingRobotType1").clone());
         }
-        for(int i = 1; i<= configuration.getConfiguration().get("numSweepingRobotType2"); i++) {
+        for(int i = 1; i<= configuration.getConfigurations().get("numSweepingRobotType2"); i++) {
             csModelList.put(String.format("SweepingRobotType2_%s",i), (CS) csSpecificationList.get("SweepingRobotType2").clone());
         }
-        for(int i = 1; i<= configuration.getConfiguration().get("numMoppingRobotType1"); i++) {
+        for(int i = 1; i<= configuration.getConfigurations().get("numMoppingRobotType1"); i++) {
             csModelList.put(String.format("MoppingRobotType1_%s",i), (CS) csSpecificationList.get("MoppingRobotType1").clone());
         }
-        for(int i = 1; i<= configuration.getConfiguration().get("numMoppingRobotType2"); i++) {
+        for(int i = 1; i<= configuration.getConfigurations().get("numMoppingRobotType2"); i++) {
             csModelList.put(String.format("MoppingRobotType2_%s",i), (CS) csSpecificationList.get("MoppingRobotType2").clone());
         }
 
         csModelList.put("DustController", (CS) csSpecificationList.get("DustController").clone());
         //System.out.println(csModelList.size());
     }
-
-    private void AddEnvironments() {
+    @Override
+    void AddEnvironments() {
         for(int i=1; i<=MapSize; i++) {
             for(int j=1; j<=MapSize; j++) {
                 EnvironmentModelList.put(String.format("Tile(%s,%s)",i,j), new Tile(i,j));
@@ -119,7 +118,7 @@ public class CleaningSoS extends SoS {
         }
     }
 
-    public Strategy getStrategy(int MType1, int MType2, int SType1, int SType2) throws CloneNotSupportedException {
+    public Strategy generateStrategy(int MType1, int MType2, int SType1, int SType2) throws CloneNotSupportedException {
         Strategy strategy = new Strategy();
 
         if(MType1 >= 0) {
