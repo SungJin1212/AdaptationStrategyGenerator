@@ -1,5 +1,6 @@
 package CodeGeneration.Parser;
 
+import CodeGeneration.XMLParseDataType.ActionDescription;
 import CodeGeneration.XMLParseDataType.State;
 import CodeGeneration.XMLParseDataType.Transition;
 import org.w3c.dom.Document;
@@ -79,36 +80,6 @@ public class BehaviorParser {
         return localVariables;
     }
 
-    public static String getActionCode(String url) {
-        String actionCode = "";
-
-        try {
-
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-
-            Document document = builder.parse(url);
-
-            Element rootElement = document.getDocumentElement();
-            NodeList instanceNodes = rootElement.getElementsByTagName("INSTANCE");
-
-            for (int i=0; i<instanceNodes.getLength(); i++) {
-                Element e = (Element) instanceNodes.item(i);
-
-                NodeList nList = e.getElementsByTagName("ATTRIBUTE");
-
-                if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("ActionDescription")) {
-                    if(!nList.item(2).getTextContent().equals("")) {
-                        actionCode = nList.item(2).getTextContent();
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return actionCode;
-    }
 
     public static String getType(String url) {
         String type = "";
@@ -141,6 +112,39 @@ public class BehaviorParser {
 
 
         return type;
+    }
+
+    public static ArrayList<ActionDescription> getActionCode(String url) {
+        ArrayList<ActionDescription> actionDescriptions = new ArrayList<>(0);
+        try {
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document document = builder.parse(url);
+
+            Element rootElement = document.getDocumentElement();
+            NodeList instanceNodes = rootElement.getElementsByTagName("INSTANCE");
+
+            for (int i=0; i<instanceNodes.getLength(); i++) {
+                ActionDescription actionDescription = new ActionDescription();
+                Element e = (Element) instanceNodes.item(i);
+
+                NodeList nList = e.getElementsByTagName("ATTRIBUTE");
+
+                if(nList.item(0).getParentNode().getAttributes().getNamedItem("class").getNodeValue().equals("ActionDescription")) {
+                    if(!nList.item(2).getTextContent().equals("")) {
+                        actionDescription.setEffect(nList.item(2).getTextContent());
+                        actionDescription.setActionName(nList.item(3).getTextContent());
+                        actionDescriptions.add(actionDescription);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return actionDescriptions;
     }
 
 

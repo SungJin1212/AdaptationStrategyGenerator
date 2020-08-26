@@ -8,7 +8,8 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
-import static Simulator.SimulationEngine.getFitness;
+import static StrategyGenerationEngine.Simulator.evaluateStrategy;
+
 
 public class CleaningSoSProblem extends AbstractProblem {
 
@@ -75,7 +76,7 @@ public class CleaningSoSProblem extends AbstractProblem {
 
 
             Strategy strategy = cleaningSoS.generateStrategy(MType1, MType2, SType1, SType2);
-            Goals = getFitness(cleaningSoS, strategy, this.simulationTime);
+            Goals = Simulator.evaluateStrategy(cleaningSoS, strategy, this.simulationTime);
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -134,11 +135,12 @@ public class CleaningSoSProblem extends AbstractProblem {
     public Solution newSolution() {
         Solution solution = new Solution(getNumberOfVariables(), getNumberOfObjectives(), getNumberOfConstraints());
 
-        solution.setVariable(0, EncodingUtils.newInt(-100, 100));
-        solution.setVariable(1, EncodingUtils.newInt(-100, 100));
-        solution.setVariable(2, EncodingUtils.newInt(-100, 100));
-        solution.setVariable(3, EncodingUtils.newInt(-100, 100));
+        solution.setVariable(0, EncodingUtils.newInt(-10, 10));
+        solution.setVariable(1, EncodingUtils.newInt(-10, 10));
+        solution.setVariable(2, EncodingUtils.newInt(-10, 10));
+        solution.setVariable(3, EncodingUtils.newInt(-10, 10));
 
         return solution;
     }
+
 }

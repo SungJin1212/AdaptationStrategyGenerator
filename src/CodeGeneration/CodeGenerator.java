@@ -1,10 +1,11 @@
 package CodeGeneration;
 
+import CodeGeneration.XMLParseDataType.ActionDescription;
 import CodeGeneration.XMLParseDataType.State;
 import CodeGeneration.XMLParseDataType.Synchronization;
 import CodeGeneration.XMLParseDataType.Transition;
-import Model.GeneratedCode.Behavior.Environment;
 import Model.GeneratedCode.Behavior.CS;
+import Model.GeneratedCode.Behavior.Environment;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
@@ -39,9 +40,9 @@ public class CodeGenerator {
 //        urlList.add("MoppingRobot.xml");
 //        urlList.add("SweepingRobot.xml");
 //        urlList.add("Tile.xml");
-        urlList.add("Dust.xml");
-//        urlList.add("DustController.xml");
-
+//        urlList.add("Dust.xml");
+        urlList.add("DustController.xml");
+//          urlList.add("test.xml");
 
         for(String url : urlList) {
             ArrayList<Transition> trans = getTransitionInformation(url);
@@ -70,10 +71,9 @@ public class CodeGenerator {
             ArrayList<State> States = getStateInformation(url); //get state information
             ArrayList<Transition> Transitions = getTransitionInformation(url); //get transition information
             ArrayList<String> Parameters = getParameterInformation(url);
-            String actionCode = getActionCode(url);
+            ArrayList<ActionDescription> actionCodes = getActionCode(url);
             String type = getType(url);
             ArrayList<String> localVariables = getLocalVariableInformation(url);
-
 
 
             /* print parsed data */
@@ -92,19 +92,19 @@ public class CodeGenerator {
             }
             System.out.println("--------------------");
 
-            BehaviorCodeGeneration(url,type,actionCode, localVariables, States, Transitions, Parameters,AllTransition);
+            BehaviorCodeGeneration(url,type,actionCodes, localVariables, States, Transitions, Parameters,AllTransition);
         }
 
     }
 
 
 
-    private static void BehaviorCodeGeneration(String url, String type, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
+    private static void BehaviorCodeGeneration(String url, String type, ArrayList<ActionDescription> actionCodes, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
 
-        BehaviorGeneration(url, type, actionCode, localVariables, states, transitions, parameters, allTransition);
+        BehaviorGeneration(url, type, actionCodes, localVariables, states, transitions, parameters, allTransition);
     }
 
-    private static void BehaviorGeneration(String url, String type, String actionCode, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
+    private static void BehaviorGeneration(String url, String type, ArrayList<ActionDescription> actionCodes, ArrayList<String> localVariables, ArrayList<State> states, ArrayList<Transition> transitions, ArrayList<String> parameters, Set<Synchronization> allTransition) {
         String className = url.substring(0,url.lastIndexOf(".")); //get state machine name
         String initialStateName = getInitialStateName(states); // get name of the initial state
         TypeSpec enumTypeSpec = enumGeneration(states); //enum generation
@@ -120,7 +120,7 @@ public class CodeGenerator {
         ArrayList<FieldSpec> LocalVariablesFields = getLocalFieldSpec(localVariables);
         ArrayList<FieldSpec> TimeVariablesFields = getTimeFieldSpec(states);
         ArrayList<MethodSpec> trans = getTransition(transitions,allTransition,states); // get transition code
-        ArrayList<MethodSpec> actions = getAction(transitions,actionCode);
+        ArrayList<MethodSpec> actions = getAction(transitions,actionCodes);
 
         //MethodSpec.Builder builder = MethodSpec.methodBuilder(curTriggerName).addModifiers(Modifier.PUBLIC).returns(boolean.class);
 
@@ -152,6 +152,7 @@ public class CodeGenerator {
 
 
         JavaFile javaFile = JavaFile.builder("Model.GeneratedCode.Behavior", builder.build())
+
                 .build();
         try {
             javaFile.writeTo(Paths.get("./src"));

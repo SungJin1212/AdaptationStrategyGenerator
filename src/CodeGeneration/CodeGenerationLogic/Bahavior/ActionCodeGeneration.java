@@ -1,5 +1,6 @@
 package CodeGeneration.CodeGenerationLogic.Bahavior;
 
+import CodeGeneration.XMLParseDataType.ActionDescription;
 import CodeGeneration.XMLParseDataType.Transition;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
@@ -9,7 +10,7 @@ import java.util.*;
 
 public class ActionCodeGeneration {
 
-    public static ArrayList<MethodSpec> getAction(ArrayList<Transition> transitions, String actionCode) {
+    public static ArrayList<MethodSpec> getAction(ArrayList<Transition> transitions, ArrayList<ActionDescription> actionCodes) {
 
         ArrayList<MethodSpec> actions = new ArrayList<>();
 
@@ -24,7 +25,7 @@ public class ActionCodeGeneration {
             }
         }
         for(String s : names) {
-            actions.add(getEachAction(s,actionCode));
+            actions.add(getEachAction(s,actionCodes));
         }
 //
 //        for (Transition t : transitions) {
@@ -38,33 +39,39 @@ public class ActionCodeGeneration {
         return actions;
     }
 
-    private static MethodSpec getEachAction(String actionName, String actionCode) {
+    private static MethodSpec getEachAction(String actionName, ArrayList<ActionDescription> actionCodes) {
         MethodSpec.Builder builder = MethodSpec.methodBuilder(actionName).addModifiers(Modifier.PRIVATE);
 
-        int idx = actionCode.lastIndexOf(actionName);
-        if (idx != -1) {
-            idx += actionName.length();
-            //System.out.println(actionCode.charAt(idx));
-            int startIdx = 0, endIdx = 0;
-
-            for (int i = idx; i <= actionCode.length(); i++) {
-                if (isAlpha(actionCode.charAt(i))) { // find alphabet index
-                    startIdx = i;
-                    break;
-                }
+        for(ActionDescription actionDescription : actionCodes) {
+            if(actionDescription.getActionName().equals(actionName)) {
+                String effectCode = actionDescription.getEffect();
+                CodeBlock code = CodeBlock.builder().addStatement(effectCode.substring(0, effectCode.length()-1)).build(); // 마지막 ";" 제외하고 생성
+                builder.addCode(code);
             }
-            for (int i = idx; i <= actionCode.length(); i++) {
-                if (actionCode.charAt(i) == '}') { // find end of the method index
-                    endIdx = i;
-                    break;
-                }
-            }
-            //System.out.println(actionCode.substring(startIdx + 1, endIdx - 1));
-
-            CodeBlock code = CodeBlock.builder().addStatement(actionCode.substring(startIdx, endIdx - 2)).build();
-
-            builder.addCode(code);
         }
+
+//        int idx = actionCode.lastIndexOf(actionName);
+//        if (idx != -1) {
+//            idx += actionName.length();
+//            //System.out.println(actionCode.charAt(idx));
+//            int startIdx = 0, endIdx = 0;
+//
+//            for (int i = idx; i <= actionCode.length(); i++) {
+//                if (isAlpha(actionCode.charAt(i))) { // find alphabet index
+//                    startIdx = i;
+//                    break;
+//                }
+//            }
+//            for (int i = idx; i <= actionCode.length(); i++) {
+//                if (actionCode.charAt(i) == '}') { // find end of the method index
+//                    endIdx = i;
+//                    break;
+//                }
+//            }
+//            //System.out.println(actionCode.substring(startIdx + 1, endIdx - 1));
+//
+//            CodeBlock code = CodeBlock.builder().addStatement(actionCode.substring(startIdx, endIdx - 2)).build();
+
 
         return builder.build();
     }

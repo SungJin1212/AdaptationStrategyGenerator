@@ -15,6 +15,10 @@ public class CleaningSoS extends SoS {
     public static int INITIALDUST = 200;
     public static int MopDust = 100;
     public static int dustMax = 400;
+    public static int MapSize = 10;
+    public static int dustUnit;
+    public static int[][] tileMap = new int[MapSize+1][MapSize+1];
+
 
     /*Constraint*/
     public static int maxNumOfSweepingRobotType1 = 20;
@@ -27,16 +31,6 @@ public class CleaningSoS extends SoS {
     public static int maxNumOfMoppingRobotType2 = 20;
     public static int minNumOfMoppingRobotType2 = 1;
 
-
-    public static int MapSize = 10;
-    public static int dustUnit;
-    public static int[][] tileMap = new int[MapSize+1][MapSize+1];
-
-
-    public static int totalCost = 0;
-    public static int moppedTile = 0;
-    public static int sweeppedTile = 0;
-    public static int dustLevel;
 
     public CleaningSoS(CleaningSoSEnvironmentCondition cleaningSoSEnvironmentCondition, CleaningSoSConfiguration cleaningSoSConfiguration) throws CloneNotSupportedException {
         super(cleaningSoSEnvironmentCondition, cleaningSoSConfiguration);
@@ -52,9 +46,6 @@ public class CleaningSoS extends SoS {
     }
 
     private void init(CleaningSoSConfiguration configuration) throws CloneNotSupportedException {
-        totalCost = 0;
-        moppedTile = 0;
-        sweeppedTile = 0;
 
         InitGlobalVariables();
         AddSystemSpecification();

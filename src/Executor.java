@@ -6,13 +6,12 @@ import StrategyGenerationEngine.Casebase.CaseBase;
 import StrategyGenerationEngine.Casebase.CaseBaseElement;
 import StrategyGenerationEngine.Element.CaseBaseValue;
 import StrategyGenerationEngine.Element.StrategyElement;
+import StrategyGenerationEngine.GenerationEngine;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static Simulator.SimulationEngine.ExecuteStrategyAtRunTime;
-import static StrategyGenerationEngine.GenerationEngine.getCaseBaseValueAtDesignTime;
-import static StrategyGenerationEngine.GenerationEngine.getCaseBaseValueAtRunTime;
+import static StrategyGenerationEngine.Simulator.ExecuteStrategyAtRunTime;
 
 public class Executor {
 
@@ -22,8 +21,10 @@ public class Executor {
     private CleaningSoSConfiguration initialCleaningSoSConfiguration;
     private CleaningSoSEnvironmentCondition initialCleaningSoSEnvironmentCondition;
     private ArrayList<CleaningSoSEnvironmentCondition> runtimeEnvironmentalConditions;
+    private GenerationEngine generationEngine;
 
-    public Executor(ArrayList<CleaningSoSEnvironmentCondition> expectedCleaningSoSEnvironmentConditions, ArrayList<CleaningSoSConfiguration> cleaningSoSConfigurations, CleaningSoSConfiguration initialCleaningSoSConfiguration, CleaningSoSEnvironmentCondition initialCleaningSoSEnvironmentCondition, ArrayList<CleaningSoSEnvironmentCondition> runtimeEnvironmentalConditions) {
+    public Executor(GenerationEngine generationEngine, ArrayList<CleaningSoSEnvironmentCondition> expectedCleaningSoSEnvironmentConditions, ArrayList<CleaningSoSConfiguration> cleaningSoSConfigurations, CleaningSoSConfiguration initialCleaningSoSConfiguration, CleaningSoSEnvironmentCondition initialCleaningSoSEnvironmentCondition, ArrayList<CleaningSoSEnvironmentCondition> runtimeEnvironmentalConditions) {
+        this.generationEngine = generationEngine;
         this.expectedCleaningSoSEnvironmentConditions = expectedCleaningSoSEnvironmentConditions;
         this.cleaningSoSConfigurations = cleaningSoSConfigurations;
         this.initialCleaningSoSConfiguration = initialCleaningSoSConfiguration;
@@ -44,7 +45,7 @@ public class Executor {
             CaseBaseElement caseBaseElement = new CaseBaseElement(cleaningSoSConfiguration);
             for(CleaningSoSEnvironmentCondition cleaningSoSEnvironmentCondition : expectedCleaningSoSEnvironmentConditions) {
                 CaseBaseValue caseBaseValue;
-                caseBaseValue = getCaseBaseValueAtDesignTime(timeFrame, cleaningSoSEnvironmentCondition, (CleaningSoSConfiguration) cleaningSoSConfiguration.clone());
+                caseBaseValue = generationEngine.getCaseBaseValueAtDesignTime(timeFrame, cleaningSoSEnvironmentCondition, (CleaningSoSConfiguration) cleaningSoSConfiguration.clone());
                 caseBaseValue.calAverageFitness();
                 caseBaseElement.addCaseBaseValue(caseBaseValue);
             }
@@ -67,7 +68,7 @@ public class Executor {
             ArrayList<StrategyElement> mostSimilarStrategies = caseBase.Retrieve(curConfiguration, curEnvironmentCondition);//get most similar configuration of the current configuration
 
             // Retrieve strategyElements retrieve, evolve and set fitness value
-            CaseBaseValue evolvedStrategies = getCaseBaseValueAtRunTime(timeFrame, mostSimilarStrategies, curEnvironmentCondition, curConfiguration);
+            CaseBaseValue evolvedStrategies = generationEngine.getCaseBaseValueAtRunTime(timeFrame, mostSimilarStrategies, curEnvironmentCondition, curConfiguration);
             evolvedStrategies.calAverageFitness();
 
             caseBase.Store(curConfiguration, evolvedStrategies, curEnvironmentCondition);
@@ -91,10 +92,10 @@ public class Executor {
 //            System.out.println(String.format("Current numSweepingRobotType2: %d",curConfiguration.getConfigurations().get("numSweepingRobotType2")));
 
 //
-//            ArrayList<Integer> configurationRet = new ArrayList<>(curConfiguration.getConfigurations().values());
+            ArrayList<Integer> configurationRet = new ArrayList<>(curConfiguration.getConfigurations().values());
 ////            System.out.println(String.format("Current selected strategy: %d %d %d %d", selectedStrategyElement.getStrategyValueList().get(0), selectedStrategyElement.getStrategyValueList().get(1),
 ////                    selectedStrategyElement.getStrategyValueList().get(2), selectedStrategyElement.getStrategyValueList().get(3)));
-//            System.out.println(String.format("Current Configuration: %d %d %d %d",configurationRet.get(0), configurationRet.get(1),configurationRet.get(2), configurationRet.get(3)));
+            System.out.println(String.format("Current Configuration: %d %d %d %d",configurationRet.get(0), configurationRet.get(1),configurationRet.get(2), configurationRet.get(3)));
         }
     }
 

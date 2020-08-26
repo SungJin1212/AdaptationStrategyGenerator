@@ -1,7 +1,8 @@
 import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
         import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
+import StrategyGenerationEngine.GenerationEngine;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class main {
     public static void main(String[] args) throws CloneNotSupportedException {
@@ -23,7 +24,9 @@ public class main {
         runtimeEnvironmentalConditions.add(new CleaningSoSEnvironmentCondition(30));
         runtimeEnvironmentalConditions.add(new CleaningSoSEnvironmentCondition(40));
 
-        Executor executor = new Executor(expectedCleaningSoSEnvironmentConditions, cleaningSoSConfigurations, initialCleaningSoSConfiguration, initialCleaningSoSEnvironmentCondition, runtimeEnvironmentalConditions);
-        executor.run(100,1000);
+        GenerationEngine generationEngine = new GenerationEngine(200, 10, 100, 5, "NSGAII");
+
+        Executor executor = new Executor(generationEngine, expectedCleaningSoSEnvironmentConditions, cleaningSoSConfigurations, initialCleaningSoSConfiguration, initialCleaningSoSEnvironmentCondition, runtimeEnvironmentalConditions);
+        executor.run(100,3000);
     }
 }
