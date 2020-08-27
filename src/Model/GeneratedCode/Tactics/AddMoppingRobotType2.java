@@ -1,12 +1,12 @@
 package Model.GeneratedCode.Tactics;
 
-import Model.GeneratedCode.Behavior.CS;
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Tactic;
+import Model.GeneratedCode.Behavior.CS;
 
+import static Model.GeneratedCode.Behavior.CleaningSoS.maxNumOfMoppingRobotType2;
 import static Model.GeneratedCode.Behavior.SoS.csModelList;
 import static Model.GeneratedCode.Behavior.SoS.csSpecificationList;
-import static Model.GeneratedCode.Behavior.CleaningSoS.maxNumOfMoppingRobotType2;
 
 public class AddMoppingRobotType2 extends Tactic implements Cloneable {
     private double remainTime;

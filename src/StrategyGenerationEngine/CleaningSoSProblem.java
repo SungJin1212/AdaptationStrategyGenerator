@@ -8,8 +8,6 @@ import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;
 
-import static StrategyGenerationEngine.Simulator.evaluateStrategy;
-
 
 public class CleaningSoSProblem extends AbstractProblem {
 

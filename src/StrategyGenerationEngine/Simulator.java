@@ -1,9 +1,9 @@
 package StrategyGenerationEngine;
 
-import Model.GeneratedCode.Behavior.SoS;
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Strategy;
 import Model.AbstactClass.Rule.Tactic;
+import Model.GeneratedCode.Behavior.SoS;
 import StrategyGenerationEngine.Element.StrategyElement;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import static Model.GeneratedCode.Behavior.SoS.EnvironmentModelList;
 import static Model.GeneratedCode.Behavior.SoS.csModelList;
-import static Model.GeneratedCode.Behavior.CleaningSoS.SoSGoal;
 
 public class Simulator {
 
@@ -67,7 +66,7 @@ public class Simulator {
     }
 
     static double[] evaluateStrategy(SoS sos, Strategy strategy, int simulationTime) throws CloneNotSupportedException {
-        SoSGoal = 0;
+        SoS.SoSGoal = 0;
         double latency = 0.0;
         double cost = 0.0;
         double[] tempValues = new double[2];
@@ -82,7 +81,7 @@ public class Simulator {
             cost += tempValues[0];
             latency += tempValues[1];
         }
-        return new double[]{SoSGoal, latency, cost};
+        return new double[]{SoS.SoSGoal, latency, cost};
     }
     static double evaluateStrategy(NondominatedPopulation result) {
         double ret = 0.0;

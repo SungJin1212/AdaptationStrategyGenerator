@@ -3,8 +3,8 @@ package Model.GeneratedCode.Tactics;
 import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Tactic;
 
-import static Model.GeneratedCode.Behavior.SoS.csModelList;
 import static Model.GeneratedCode.Behavior.CleaningSoS.minNumOfMoppingRobotType2;
+import static Model.GeneratedCode.Behavior.SoS.csModelList;
 
 public class RemoveMoppingRobotType2 extends Tactic implements Cloneable {
     private double remainTime;

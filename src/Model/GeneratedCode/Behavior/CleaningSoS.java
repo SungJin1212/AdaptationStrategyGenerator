@@ -5,7 +5,6 @@ import Model.AbstactClass.Rule.Configuration;
 import Model.AbstactClass.Rule.Strategy;
 import Model.AbstactClass.Rule.Tactic;
 import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
-
 import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
 import Model.GeneratedCode.Tactics.*;
 

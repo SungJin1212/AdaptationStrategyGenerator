@@ -1,5 +1,5 @@
 import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
-        import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
+import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
 import StrategyGenerationEngine.GenerationEngine;
 
 import java.util.ArrayList;
