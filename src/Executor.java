@@ -1,7 +1,7 @@
-import Model.AbstactClass.Rule.Strategy;
-import Model.GeneratedCode.Behavior.CleaningSoS;
-import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
-import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
+import Model.SoS.Strategy;
+import Model.SoS.CleaningSoS;
+import Model.SoS.CleaningSoSConfiguration;
+import Model.SoS.CleaningSoSEnvironmentCondition;
 import StrategyGenerationEngine.Casebase.CaseBase;
 import StrategyGenerationEngine.Casebase.CaseBaseElement;
 import StrategyGenerationEngine.Element.CaseBaseValue;

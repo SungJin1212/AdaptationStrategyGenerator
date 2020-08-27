@@ -1,6 +1,6 @@
 package StrategyGenerationEngine.Casebase;
 
-import Model.AbstactClass.Rule.Configuration;
+import Model.SoS.Configuration;
 import StrategyGenerationEngine.Element.CaseBaseValue;
 
 import java.util.ArrayList;

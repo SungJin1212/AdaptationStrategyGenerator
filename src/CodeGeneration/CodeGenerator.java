@@ -1,11 +1,11 @@
 package CodeGeneration;
 
-import CodeGeneration.XMLParseDataType.ActionDescription;
-import CodeGeneration.XMLParseDataType.State;
-import CodeGeneration.XMLParseDataType.Synchronization;
-import CodeGeneration.XMLParseDataType.Transition;
-import Model.GeneratedCode.Behavior.CS;
-import Model.GeneratedCode.Behavior.Environment;
+import CodeGeneration.XMLParseDataType.Behavior.ActionDescription;
+import CodeGeneration.XMLParseDataType.Behavior.State;
+import CodeGeneration.XMLParseDataType.Behavior.Synchronization;
+import CodeGeneration.XMLParseDataType.Behavior.Transition;
+import Model.Behavior.CS;
+import Model.Behavior.Environment;
 import com.squareup.javapoet.*;
 
 import javax.lang.model.element.Modifier;
@@ -16,14 +16,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static CodeGeneration.CodeGenerationLogic.Bahavior.ActionCodeGeneration.getAction;
-import static CodeGeneration.CodeGenerationLogic.Bahavior.AnnotationGeneration.getAnnotation;
-import static CodeGeneration.CodeGenerationLogic.Bahavior.BasicSkeletonGeneration.*;
-import static CodeGeneration.CodeGenerationLogic.Bahavior.LocalVariableGeneration.getLocalFieldSpec;
-import static CodeGeneration.CodeGenerationLogic.Bahavior.RunGeneration.getRun;
-import static CodeGeneration.CodeGenerationLogic.Bahavior.TimeVariableGeneration.getTimeFieldSpec;
-import static CodeGeneration.CodeGenerationLogic.Bahavior.TransitionGeneration.getTransition;
+import static CodeGeneration.CodeGenerationLogic.Behavior.ActionCodeGeneration.getAction;
+import static CodeGeneration.CodeGenerationLogic.Behavior.AnnotationGeneration.getAnnotation;
+import static CodeGeneration.CodeGenerationLogic.Behavior.BasicSkeletonGeneration.*;
+import static CodeGeneration.CodeGenerationLogic.Behavior.LocalVariableGeneration.getLocalFieldSpec;
+import static CodeGeneration.CodeGenerationLogic.Behavior.RunGeneration.getRun;
+import static CodeGeneration.CodeGenerationLogic.Behavior.TimeVariableGeneration.getTimeFieldSpec;
+import static CodeGeneration.CodeGenerationLogic.Behavior.TransitionGeneration.getTransition;
 import static CodeGeneration.Parser.BehaviorParser.*;
+
 
 public class CodeGenerator {
 
@@ -151,7 +152,7 @@ public class CodeGenerator {
         builder.build();
 
 
-        JavaFile javaFile = JavaFile.builder("Model.GeneratedCode.Behavior", builder.build())
+        JavaFile javaFile = JavaFile.builder("Model.Behavior", builder.build())
 
                 .build();
         try {

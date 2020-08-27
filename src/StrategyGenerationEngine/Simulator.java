@@ -1,9 +1,9 @@
 package StrategyGenerationEngine;
 
-import Model.AbstactClass.Rule.Configuration;
-import Model.AbstactClass.Rule.Strategy;
-import Model.AbstactClass.Rule.Tactic;
-import Model.GeneratedCode.Behavior.SoS;
+import Model.SoS.Configuration;
+import Model.SoS.Strategy;
+import Model.SoS.Tactic;
+import Model.SoS.SoS;
 import StrategyGenerationEngine.Element.StrategyElement;
 import org.moeaframework.core.NondominatedPopulation;
 import org.moeaframework.core.Solution;
@@ -11,8 +11,8 @@ import org.moeaframework.core.variable.EncodingUtils;
 
 import java.util.ArrayList;
 
-import static Model.GeneratedCode.Behavior.SoS.EnvironmentModelList;
-import static Model.GeneratedCode.Behavior.SoS.csModelList;
+import static Model.SoS.SoS.EnvironmentModelList;
+import static Model.SoS.SoS.csModelList;
 
 public class Simulator {
 

@@ -1,9 +1,9 @@
 package StrategyGenerationEngine;
 
-import Model.AbstactClass.Rule.Strategy;
-import Model.GeneratedCode.Behavior.CleaningSoS;
-import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
-import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
+import Model.SoS.Strategy;
+import Model.SoS.CleaningSoS;
+import Model.SoS.CleaningSoSConfiguration;
+import Model.SoS.CleaningSoSEnvironmentCondition;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.variable.EncodingUtils;
 import org.moeaframework.problem.AbstractProblem;

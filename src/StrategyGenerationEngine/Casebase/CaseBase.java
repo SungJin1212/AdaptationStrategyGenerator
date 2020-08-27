@@ -1,7 +1,7 @@
 package StrategyGenerationEngine.Casebase;
 
-import Model.AbstactClass.Rule.Configuration;
-import Model.AbstactClass.Rule.EnvironmentCondition;
+import Model.SoS.Configuration;
+import Model.SoS.EnvironmentCondition;
 import StrategyGenerationEngine.Element.CaseBaseValue;
 import StrategyGenerationEngine.Element.StrategyElement;
 

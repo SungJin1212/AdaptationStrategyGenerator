@@ -1,6 +1,6 @@
 package StrategyGenerationEngine.Element;
 
-import Model.AbstactClass.Rule.EnvironmentCondition;
+import Model.SoS.EnvironmentCondition;
 
 import java.util.ArrayList;
 

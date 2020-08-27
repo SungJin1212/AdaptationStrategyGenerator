@@ -1,8 +1,8 @@
 package CodeGeneration.Parser;
 
-import CodeGeneration.XMLParseDataType.ActionDescription;
-import CodeGeneration.XMLParseDataType.State;
-import CodeGeneration.XMLParseDataType.Transition;
+import CodeGeneration.XMLParseDataType.Behavior.ActionDescription;
+import CodeGeneration.XMLParseDataType.Behavior.State;
+import CodeGeneration.XMLParseDataType.Behavior.Transition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

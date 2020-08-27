@@ -1,7 +1,7 @@
 package StrategyGenerationEngine;
 
-import Model.GeneratedCode.Rule.CleaningSoSConfiguration;
-import Model.GeneratedCode.Rule.CleaningSoSEnvironmentCondition;
+import Model.SoS.CleaningSoSConfiguration;
+import Model.SoS.CleaningSoSEnvironmentCondition;
 import StrategyGenerationEngine.Element.CaseBaseValue;
 import StrategyGenerationEngine.Element.StrategyElement;
 import org.moeaframework.Executor;
