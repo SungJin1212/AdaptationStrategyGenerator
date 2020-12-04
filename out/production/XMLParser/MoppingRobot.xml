@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ADOXML SYSTEM "adoxml31.dtd">
+<ADOXML version="3.1" date="07.08.2020" time="12:48" database="adoxxdb" username="sjmodeler" adoversion="Version 5.1">
+<MODELS>
+<MODEL id="mod.72850" name="MoppingRobot" version="" modeltype="SJ" libtype="bp" applib="ADOxx 1.5 Dynamic Experimentation Library-SJ">
+<MODELATTRIBUTES>
+<ATTRIBUTE name="Version number" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Author" type="STRING">sjmodeler</ATTRIBUTE>
+<ATTRIBUTE name="Creation date" type="STRING">20.07.2020, 15:08</ATTRIBUTE>
+<ATTRIBUTE name="Date last changed" type="STRING">07.08.2020, 12:48:11</ATTRIBUTE>
+<ATTRIBUTE name="Last user" type="STRING">sjmodeler</ATTRIBUTE>
+<ATTRIBUTE name="Keywords" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Comment" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Model type" type="ENUMERATION">Current model</ATTRIBUTE>
+<ATTRIBUTE name="State" type="ENUMERATION">In process</ATTRIBUTE>
+<ATTRIBUTE name="Reviewed on" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Reviewed by" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Description" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Number of objects and relations" type="INTEGER">10</ATTRIBUTE>
+<ATTRIBUTE name="World area" type="STRING">w:21.49cm h:27.84cm minw:5cm minh:5cm</ATTRIBUTE>
+<ATTRIBUTE name="Grid" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Zoom" type="INTEGER">100</ATTRIBUTE>
+<ATTRIBUTE name="Viewable area" type="STRING">VIEW representation:graphic
+GRAPHIC x:-16 y:15 w:1537 h:1053 scale:1
+TABLE
+</ATTRIBUTE>
+<ATTRIBUTE name="Current mode" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Base name" type="STRING">MoppingRobot</ATTRIBUTE>
+<ATTRIBUTE name="Access state" type="ENUMERATION">write</ATTRIBUTE>
+<ATTRIBUTE name="Current page layout" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Connector marks" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Type" type="STRING">SJ</ATTRIBUTE>
+<ATTRIBUTE name="Change counter" type="INTEGER">445</ATTRIBUTE>
+<ATTRIBUTE name="Font size" type="INTEGER">0</ATTRIBUTE>
+<ATTRIBUTE name="Context of version" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Position" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="__GfxThumb__" type="LONGSTRING">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</ATTRIBUTE>
+</MODELATTRIBUTES>
+<INSTANCE id="obj.72852" class="State" name="Dispatch">
+<ATTRIBUTE name="Position" type="STRING">NODE x:4.5cm y:11cm index:1</ATTRIBUTE>
+<ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="bname" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="barea" type="INTEGER">0</ATTRIBUTE>
+<ATTRIBUTE name="Location name" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="InitialState" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
+</INSTANCE>
+<INSTANCE id="obj.72855" class="State" name="Mopping">
+<ATTRIBUTE name="Position" type="STRING">NODE x:16cm y:11cm index:2</ATTRIBUTE>
+<ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="bname" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="barea" type="INTEGER">0</ATTRIBUTE>
+<ATTRIBUTE name="Location name" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
+<ATTRIBUTE name="Time" type="STRING">2</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
+</INSTANCE>
+<INSTANCE id="obj.72858" class="State" name="Checking">
+<ATTRIBUTE name="Position" type="STRING">NODE x:10.5cm y:11cm index:3</ATTRIBUTE>
+<ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="bname" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="barea" type="INTEGER">0</ATTRIBUTE>
+<ATTRIBUTE name="Location name" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
+<ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
+</INSTANCE>
+<INSTANCE id="obj.77400" class="Configuration" name="Configuration-77400">
+<ATTRIBUTE name="Position" type="STRING">NODE x:7cm y:5.5cm index:6</ATTRIBUTE>
+<ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Parameters" type="STRING">cost,performance</ATTRIBUTE>
+<ATTRIBUTE name="LocalVariables" type="STRING">int x,y</ATTRIBUTE>
+<ATTRIBUTE name="Type" type="STRING">CS</ATTRIBUTE>
+</INSTANCE>
+<INSTANCE id="obj.82803" class="associationState" name="associationState-82803">
+<ATTRIBUTE name="Position" type="STRING">NODE x:10.5cm y:5cm index:7</ATTRIBUTE>
+<ATTRIBUTE name="External tool coupling" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="bname" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="barea" type="INTEGER">0</ATTRIBUTE>
+<ATTRIBUTE name="Location name" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="StateName" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="InitialState" type="STRING">0</ATTRIBUTE>
+<ATTRIBUTE name="Time" type="STRING">1</ATTRIBUTE>
+<ATTRIBUTE name="Atomic" type="STRING">0</ATTRIBUTE>
+</INSTANCE>
+<CONNECTOR id="con.72861" class="Transition">
+<FROM instance="Dispatch" class="State"></FROM>
+<TO instance="Checking" class="State"></TO>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:4 MIDDLE x:5.35cm y:11cm</ATTRIBUTE>
+<ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">initPosition,checkCanMopping</ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">initPositionandCheck</ATTRIBUTE>
+<ATTRIBUTE name="Probability" type="STRING">1</ATTRIBUTE>
+</CONNECTOR>
+<CONNECTOR id="con.72862" class="Transition">
+<FROM instance="Checking" class="State"></FROM>
+<TO instance="Mopping" class="State"></TO>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:5 MIDDLE x:12.29cm y:11cm</ATTRIBUTE>
+<ATTRIBUTE name="Guard" type="STRING">canMopping == true</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">tryMopping</ATTRIBUTE>
+<ATTRIBUTE name="Probability" type="STRING">1</ATTRIBUTE>
+</CONNECTOR>
+<CONNECTOR id="con.82806" class="Transition">
+<FROM instance="Checking" class="State"></FROM>
+<TO instance="associationState-82803" class="associationState"></TO>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 2 x1:14.5cm y1:7cm x2:14.5cm y2:5cm index:8</ATTRIBUTE>
+<ATTRIBUTE name="Guard" type="STRING">canMopping == false</ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">move,checkCanMopping</ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">doMove</ATTRIBUTE>
+<ATTRIBUTE name="Probability" type="STRING">1</ATTRIBUTE>
+</CONNECTOR>
+<CONNECTOR id="con.82808" class="Transition">
+<FROM instance="Mopping" class="State"></FROM>
+<TO instance="Checking" class="State"></TO>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 2 x1:16cm y1:15.5cm x2:10.5cm y2:15.5cm index:9 MIDDLE x:12.93cm y:15.5cm</ATTRIBUTE>
+<ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING">mopping,checkCanMopping</ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING">Mop[x][y]!</ATTRIBUTE>
+<ATTRIBUTE name="Probability" type="STRING"></ATTRIBUTE>
+</CONNECTOR>
+<CONNECTOR id="con.82830" class="Transition">
+<FROM instance="associationState-82803" class="associationState"></FROM>
+<TO instance="Checking" class="State"></TO>
+<ATTRIBUTE name="Positions" type="STRING">EDGE 0 index:10</ATTRIBUTE>
+<ATTRIBUTE name="Guard" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Action" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Trigger" type="STRING"></ATTRIBUTE>
+<ATTRIBUTE name="Probability" type="STRING">1</ATTRIBUTE>
+</CONNECTOR>
+</MODEL>
+</MODELS>
+</ADOXML>

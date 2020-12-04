@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="MOEAFramework-2.13">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/MOEAFramework-2.13.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/MOEAFramework-2.13.jar!/examples" />
+    </SOURCES>
+  </library>
+</component>
