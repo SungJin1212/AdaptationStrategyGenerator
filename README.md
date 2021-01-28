@@ -9,6 +9,7 @@ The behavior model consists of three components: 1) a set of states, 2) a set of
 
 - The configuration has a parameter that specifies parameter values for the behavior model.
 
+## Simulation
 For every simulation tick, whole behavior models that belong to the SoS model are executed. In the execution of each behavior model, if a sojourn time has passed, then the behavior model will collect a transition whose guard condition is true for all leaving transitions in the current state. Then, for all collected transitions, one transition will be triggered according to the probabilities in transitions.
 
 ## Example
