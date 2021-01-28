@@ -8,8 +8,14 @@ The behavior model consists of three components: 1) a set of states, 2) a set of
 - Each transition *tr* consists of a guard, a probability, an action list, and a synchronization channel. A guard is a *boolean* value that specifies a precondition that must be satisfied for the transition. The probability is a *double* value that specifies the probability of the transition being triggered. The action is a function executed during the transition and corresponds to the function in the java code. We additionally implement the contents of actions in java. The synchronization channel describes the interactions between two models. We use two notations, ! and ?, to denote the sending synchronization action and receiving synchronization action respectively, which refer to the communication channel in a UPPAAL modeling tool [[1]](#1).
 
 - The configuration has a parameter that specifies parameter values for the behavior model.
+
 For every simulation tick, whole behavior models that belong to the SoS model are executed. In the execution of each behavior model, if a sojourn time has passed, then the behavior model will collect a transition whose guard condition is true for all leaving transitions in the current state. Then, for all collected transitions, one transition will be triggered according to the probabilities in transitions.
 
+## Example
+
+![CS behavior model examplev4](https://user-images.githubusercontent.com/23732725/106096866-aa3d1900-6179-11eb-92a2-3b0e4e9b4e20.PNG)
+
+A scenario described in the example model is that a human pushes a light toggle button of a bulb for each tick, but the turn on/off operations do not work correctly because the bulb is old. The behavior of pushing the toggle button is expressed by a send action (*PushButton!*) of the communication channel with a probability of 0.7. The behavior of being toggled is expressed in the bulb model (*PushButton?*). Whenever states are changed by a sending synchronization action of the human model, actions in transition are executed (*bulbOn* or *bulbOff* in the bulb model). The small black state in the *human* model denotes a dummy state to express self-transition because the ADOxx does not allow a relation whose source and destination are the same.
 
 # MCIRSoS Behavior Model
 The MCIR-SoS model contains share (or global) variables that are commonly accessed by behavior models. The share variables are as follows: 2D array for specifying ground and sea map (*GroundMap[MapSize][MapSize]*, and *SeaMap[MapSize][MapSize]*), and environmental condition values (*WeatherCondition* and *RoadCondition*).
