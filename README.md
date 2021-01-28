@@ -35,7 +35,7 @@ At the *Waiting* state, the ambulance checks whether or not there are rescued pa
 ## Patient Internal Environment Model
 ![PatientCSv4](https://user-images.githubusercontent.com/23732725/106094590-998aa400-6175-11eb-8b5c-8151f853c923.png)
 
-The patient's models have an *x,y* parameter to express the position of each patient. %The behaviors described in both models correspond to a each cell of the *GroundMap[][]* and *SeaMap[][]}* For each cell of both maps, the patients emerge if the number of current patients does not exceed the limit. Upon emerging, the patients are assigned a severity level (1 or 2) with the same probability. Next, the patients are transited to the *Rescued* state if the firefighter or helicopter executes synchronization channels with a send command (*GroundPatient[x,y]! or *SeaPatient[x,y]!*).
+The patient's models have an *x,y* parameter to express the position of each patient. The behaviors described in both models correspond to a each cell of the *GroundMap[][]* and *SeaMap[][]}* For each cell of both maps, the patients emerge if the number of current patients does not exceed the limit. Upon emerging, the patients are assigned a severity level (1 or 2) with the same probability. Next, the patients are transited to the *Rescued* state if the firefighter or helicopter executes synchronization channels with a send command (*GroundPatient[x,y]! or *SeaPatient[x,y]!*).
 
 ## References
 <a id="1">[1]</a> 
